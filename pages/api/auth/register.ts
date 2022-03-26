@@ -17,6 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
     await prisma.user.create({ data: { email } });
-    return res.status(200).redirect("/auth/verifyRequest").end();
+    return res.status(200).end();
   }
 }

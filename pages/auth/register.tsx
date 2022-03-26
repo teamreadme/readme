@@ -1,16 +1,19 @@
 import { ExclamationIcon, LockClosedIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
   async function signInClicked(e: any) {
     e.preventDefault();
     try {
       await axios.put("/api/auth/register", { email });
-      await signIn("email", { email, redirect: true, callbackUrl: "/app/dashboard" });
+      await signIn("email", { email, redirect: false, callbackUrl: "/app/dashboard" });
+      router.push('/auth/verifyRequest')
     } catch (err: any) {
       if (err.response.data) {
         setError(err.response.data.error);
