@@ -30,8 +30,15 @@ export default NextAuth({
   },
   providers: [
     EmailProvider({
-      server: `smtp://postmaster:${process.env.MAILGUN_SMTP_PASSWORD}@${process.env.MAILGUN_DOMAIN}:${process.env.MAILGUN_PORT}`,
       from: process.env.EMAIL_FROM,
+      server: {
+        host: process.env.MAILGUN_SMTP_SERVER,
+        port: process.env.MAILGUN_PORT,
+        auth: {
+          user: process.env.MAILGUN_SMTP_LOGIN!,
+          pass: process.env.MAILGUN_SMTP_PASSWORD
+        }
+      },
     }),
   ],
   secret: process.env.SECRET

@@ -1,4 +1,5 @@
 import { MailIcon } from "@heroicons/react/outline";
+import Image from "next/image";
 import Link from "next/link";
 
 /*
@@ -54,7 +55,7 @@ export default function Example() {
             <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
           </h1>
           <figure className="mt-2">
-            <img className="w-full rounded-lg" src="https://picsum.photos/1310/873" alt="" width={1310} height={873} />
+            <Image className="w-full rounded-lg" src="https://picsum.photos/1310/873" alt="" width={1310} height={873} />
             <figcaption className="sr-only">Product screenshot</figcaption>
           </figure>
           <p className="mt-8 text-xl text-gray-500 leading-8">
