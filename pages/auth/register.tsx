@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault();
     try {
       await axios.put("/api/auth/register", { email });
-      await signIn("email", { email, redirect: false, callbackUrl: "/app/dashboard" });
+      await signIn("email", { email, redirect: false, callbackUrl: "/dashboard" });
       router.push('/auth/verifyRequest')
     } catch (err: any) {
       if (err.response.data) {

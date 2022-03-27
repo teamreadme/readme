@@ -1,0 +1,1 @@
+update users set username = split_part(email, '@', 1);

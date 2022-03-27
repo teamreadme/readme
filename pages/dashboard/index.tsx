@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AppLayout from "@/pages/app/AppLayout";
-import { PrismaClient, ReadMe } from "@prisma/client";
 import { getSession, useSession } from "next-auth/react";
 import axios from "axios";
 import { Session } from "next-auth";
-const prisma = new PrismaClient();
+import { prisma } from "@/utils/prisma";
+import { ReadMe } from "@prisma/client";
 
 interface DashboardProps {
   readMe: ReadMe | null;
@@ -28,7 +28,7 @@ export default function Dashboard(props: DashboardProps) {
   }, [value]);
 
   return (
-    <AppLayout>
+    <AppLayout title="Dashboard">
       <div>
         <label htmlFor="readme" className="block text-sm font-medium text-gray-700">
           README
@@ -53,7 +53,7 @@ export async function getServerSideProps(context: any) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/auth/login",
         permanent: false,
       },
     };

@@ -1,13 +1,21 @@
 import { useSession } from "next-auth/react";
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { classNames } from "@/utils/formatter";
+import Link from "next/link";
+import { prependOnceListener } from "process";
 
-function AppLayout({ children }: { children: React.ReactNode }) {
+interface AppLayoutProps {
+  children: React.ReactNode;
+  title: string;
+}
+
+function AppLayout(props: AppLayoutProps) {
   const userSession = useSession();
   const router = useRouter();
+  const currentPath = useMemo(() => router.pathname, [router.pathname]);
   if (userSession.status == "unauthenticated") {
     router.push("/");
     return <></>;
@@ -28,17 +36,16 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
-                      <a
-                        key="dashboard"
-                        href={"/app"}
-                        className={classNames(
-                          true ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
-                        )}
-                        aria-current={true ? "page" : undefined}
-                      >
-                        {"Dashboard"}
-                      </a>
+                      <Link passHref key="dashboard" href="/dashboard" aria-current={currentPath == "/dashboard" ? "page" : undefined}>
+                        <a
+                          className={classNames(
+                            currentPath == "/dashboard" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium"
+                          )}
+                        >
+                          Dashboard
+                        </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -53,41 +60,12 @@ function AppLayout({ children }: { children: React.ReactNode }) {
                     </button>
 
                     {/* Profile dropdown */}
-                    <Menu as="div" className="ml-3 relative">
-                      <div>
-                        <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                          <span className="sr-only">Open user menu</span>
-                          <img className="h-8 w-8 rounded-full" src={"https://picsum.photos/200/200"} alt="" />
-                        </Menu.Button>
+                    <Link href="/profile">
+                      <div className="max-w-xs ml-2 cursor-pointer bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span className="sr-only">Open profile settings</span>
+                        <img className="h-8 w-8 rounded-full" src={"https://picsum.photos/200/200"} alt="" />
                       </div>
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          {/* {userNavigation.map((item) => (
-                              <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <a
-                                    href={item.href}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
-                                    )}
-                                  >
-                                    {item.name}
-                                  </a>
-                                )}
-                              </Menu.Item>
-                            ))} */}
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
+                    </Link>
                   </div>
                 </div>
                 <div className="-mr-2 flex md:hidden">
@@ -154,11 +132,11 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{props.title}</h1>
         </div>
       </header>
       <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</div>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{props.children}</div>
       </main>
     </div>
   );

@@ -1,10 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import EmailProvider from "next-auth/providers/email";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/utils/prisma";
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -35,11 +33,11 @@ export default NextAuth({
         host: process.env.MAILGUN_SMTP_SERVER,
         port: process.env.MAILGUN_PORT,
         auth: {
-          user: process.env.MAILGUN_SMTP_LOGIN!,
-          pass: process.env.MAILGUN_SMTP_PASSWORD
-        }
+          user: process.env.MAILGUN_SMTP_LOGIN,
+          pass: process.env.MAILGUN_SMTP_PASSWORD,
+        },
       },
     }),
   ],
-  secret: process.env.SECRET
+  secret: process.env.SECRET,
 });
