@@ -176,9 +176,11 @@ const Element = ({ attributes, children, element }: any) => {
   switch (element.type) {
     case "block-quote":
       return (
-        <blockquote style={style} {...attributes}>
-          {children}
-        </blockquote>
+        <div className="prose">
+          <blockquote className="prose-blockquote" style={style} {...attributes}>
+            {children}
+          </blockquote>
+        </div>
       );
     case "bulleted-list":
       return (
