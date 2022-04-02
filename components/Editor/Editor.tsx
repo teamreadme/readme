@@ -44,7 +44,7 @@ const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
 export default function EditorComponent(props: EditorProps) {
   const [editor] = useState(() => withReact(createEditor()));
-  const [value, setValue] = useState<Descendant[]>(props.initialData ? JSON.parse(props.initialData) : []);
+  const [value, setValue] = useState<Descendant[]>(props.initialData?.length ? JSON.parse(props.initialData) : []);
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
@@ -75,11 +75,13 @@ export default function EditorComponent(props: EditorProps) {
               <BlockButton format="right" iconClassName="rotate-[90deg]" Icon={FilterIcon} />
               <BlockButton format="justify" Icon={ThreeBarsIcon} />
             </div>
-            <Link href="/profile" passHref>
-              <a title="Edit profile">
-                <PersonIcon size="medium" className="cursor-pointer h-[20px]" />
-              </a>
-            </Link>
+            <div className="hidden sm:block">
+              <Link href="/profile" passHref>
+                <a title="Edit profile">
+                  <PersonIcon size="medium" className="cursor-pointer h-[20px]" />
+                </a>
+              </Link>
+            </div>
           </Toolbar>
         )}
         <Editable
