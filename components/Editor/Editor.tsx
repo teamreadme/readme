@@ -65,7 +65,7 @@ export default function EditorComponent(props: EditorProps) {
   }
 
   return (
-    <div className={classNames("min-h-[500px]", props.className)}>
+    <div className={classNames("min-h-[500px] bg-white rounded-md mt-2", props.className)}>
       <Slate editor={editor} value={value} onChange={save}>
         {!props.readOnly && (
           <Toolbar className="border-b-2 border-gray-200 w-full p-4 flex">
