@@ -45,11 +45,11 @@ export default function Homepage() {
         <div className="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto">
           <p>
             Since the mid-1970s README files have been included alongside software to provide an overview and describe the purpose of a piece of software.
-            Shouldn't humans come with the same documentation? README acts as a living, breathing documentation of yourself:
+            Shouldn&apos;t humans come with the same documentation? README acts as a living, breathing documentation of yourself:
           </p>
           <ul role="list">
             <li>Introduce your preferred communication methods.</li>
-            <li>Let peers know flaws you're working on fixing.</li>
+            <li>Let peers know flaws you&apos;re working on fixing.</li>
             <li>Learn about how people truly see themselves.</li>
           </ul>
           <p>Let the world know who you are.</p>
