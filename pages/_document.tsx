@@ -7,7 +7,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=optional" rel="stylesheet" />
         </Head>
         <body>
           <Main />
