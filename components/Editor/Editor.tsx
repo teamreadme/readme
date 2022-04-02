@@ -44,7 +44,16 @@ const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
 export default function EditorComponent(props: EditorProps) {
   const [editor] = useState(() => withReact(createEditor()));
-  const [value, setValue] = useState<Descendant[]>(props.initialData?.length ? JSON.parse(props.initialData) : []);
+  const [value, setValue] = useState<Descendant[]>(
+    props.initialData
+      ? JSON.parse(props.initialData)
+      : [
+          {
+            type: "paragraph",
+            children: [{ text: "" }],
+          },
+        ]
+  );
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
