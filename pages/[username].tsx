@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { prisma } from "@/utils/prisma";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next/types";
+import { Editor } from "slate";
+import EditorComponent from "@/components/Editor/Editor";
+import { getSession, useSession } from "next-auth/react";
+import { prependOnceListener } from "process";
+import classNames from "classnames";
+import axios from "axios";
+import Link from "next/link";
 
 export default function PublicProfile({ readMe }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { data: session } = useSession({ required: false });
+  const isUser = useMemo(() => readMe?.userId == session?.user.id, [readMe, session]);
+
+  /**
+   * Update the readme on save
+   * @param data
+   */
+  async function save(data: string) {
+    await axios.patch("/api/readme", {
+      text: data,
+    });
+  }
+
   return (
-    <div className="relative py-16 bg-white overflow-hidden">
+    <div className="relative py-16 min-h-screen flex flex-col justify-center bg-white overflow-hidden">
       <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
         <div className="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
           <svg className="absolute top-12 left-full transform translate-x-32" width={404} height={384} fill="none" viewBox="0 0 404 384">
@@ -41,7 +61,12 @@ export default function PublicProfile({ readMe }: InferGetServerSidePropsType<ty
             </span>
             <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
           </h1>
-          <p className="mt-8 text-xl text-gray-500 leading-8">{readMe?.text}</p>
+          <EditorComponent
+            onChange={save}
+            readOnly={!isUser}
+            initialData={readMe?.text}
+            className={classNames({ "shadow-none": !isUser, "shadow-md": isUser, "mt-4": isUser })}
+          />
         </div>
       </div>
     </div>
@@ -50,10 +75,12 @@ export default function PublicProfile({ readMe }: InferGetServerSidePropsType<ty
 
 /**
  * Load a public, unauthenticated readme profile
- * @param context 
- * @returns 
+ * @param context
+ * @returns
  */
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const session = await getSession(context);
+
   if (!context.query.username || Array.isArray(context.query.username)) {
     return {
       redirect: {
@@ -73,15 +100,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     include: { user: { select: { firstName: true, lastName: true, username: true } } },
   });
 
-  if (readMe==null) {
+  if (readMe == null) {
     return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-        props: {},
-      };
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+      props: {},
+    };
   }
 
-  return { props: { readMe } };
+  return { props: { readMe, session } };
 };

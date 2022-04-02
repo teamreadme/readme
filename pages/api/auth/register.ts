@@ -1,18 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { prisma } from "@/utils/prisma";
-import Joi from "joi";
+import * as Joi from "@hapi/joi";
 import connect from "next-connect";
-import validate from "@/utils/apiValidation";
+import withJoi from "@/utils/WithJoi";
+import "joi-extract-type";
 
-interface RegisterUserDto {
-  email: string;
-}
 const registerUserSchema = Joi.object({
-  email: Joi.string().email().max(512),
+  email: Joi.string().required().email().max(512),
 });
 
-export default connect()
-.put(validate({ body: registerUserSchema }), async (req: NextApiRequest, res: NextApiResponse) => {
+type RegisterUserDto = Joi.extractType<typeof registerUserSchema>;
+
+export default connect().put(withJoi({ body: registerUserSchema }), async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body as RegisterUserDto;
   let existing = await prisma.user.findFirst({ where: { email } });
   if (!existing) {

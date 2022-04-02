@@ -3,28 +3,27 @@ import { getSession } from "next-auth/react";
 import { throwError } from "@/utils/apiUtils";
 import validator from "validator";
 import { prisma } from "@/utils/prisma";
-import Joi from "joi";
 import connect from "next-connect";
-import validate, { authenticatedRequest } from "@/utils/apiValidation";
+import { authenticatedRequest } from "@/utils/apiValidation";
+import * as Joi from "@hapi/joi";
+import withJoi from "@/utils/WithJoi";
+import "joi-extract-type";
 
 const userUpdateSchema = Joi.object({
   firstName: Joi.string().max(255).min(1),
   lastName: Joi.string().max(255).min(1),
   username: Joi.string()
     .max(255)
+    .not("me")
     .min(3)
     .regex(/^[a-zA-Z0-9_.]+$/),
 });
 
-interface UpdateUserDto {
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-}
+type UpdateUserDto = Joi.extractType<typeof userUpdateSchema>;
 
 export default connect()
   .all(authenticatedRequest)
-  .patch(validate({ body: userUpdateSchema }), async (req: NextAuthenticatedApiRequest, res: NextApiResponse) => {
+  .patch(withJoi({ body: userUpdateSchema }), async (req: NextAuthenticatedApiRequest, res: NextApiResponse) => {
     const { firstName, lastName, username } = req.body as UpdateUserDto;
     const updateObj: UpdateUserDto = {};
     if (firstName) {
@@ -35,10 +34,11 @@ export default connect()
     }
     if (username) {
       let existing = await prisma.user.findFirst({ where: { username } });
-      if (existing) {
+      if (existing && existing.id !== req.session.user.id) {
         return throwError(res, "Username already exists");
+      } else if (!existing) {
+        updateObj.username = username;
       }
-      updateObj.username = username;
     }
     if (Object.keys(updateObj).length == 0) {
       return throwError(res, "Data required");

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Homepage() {
   return (
-    <div className="relative py-16 bg-white overflow-hidden">
+    <div className="relative py-16 min-h-screen flex flex-col justify-center bg-white overflow-hidden">
       <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
         <div className="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
           <svg className="absolute top-12 left-full transform translate-x-32" width={404} height={384} fill="none" viewBox="0 0 404 384">
@@ -38,30 +38,21 @@ export default function Homepage() {
           <h1>
             <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
           </h1>
-          <figure className="mt-2">
-            <Image className="w-full rounded-lg" src="https://picsum.photos/1310/873" alt="" width={1310} height={873} />
-            <figcaption className="sr-only">Product screenshot</figcaption>
-          </figure>
           <p className="mt-8 text-xl text-gray-500 leading-8">
-            Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat
-            egestas ac. Diam nulla orci at in viverra scelerisque eget. Eleifend egestas fringilla sapien.
+            Outside of dating profiles and twitter bios, how much opportunity do people really have to communicate who they are online?
           </p>
         </div>
         <div className="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto">
           <p>
-            Faucibus commodo massa rhoncus, volutpat. <strong>Dignissim</strong> sed <strong>eget risus enim</strong>. Mattis mauris semper sed amet vitae sed
-            turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit neque erat velit. Faucibus commodo massa rhoncus, volutpat.
-            Dignissim sed eget risus enim. <a href="#">Mattis mauris semper</a> sed amet vitae sed turpis id.
+            Since the mid-1970s README files have been included alongside software to provide an overview and describe the purpose of a piece of software.
+            Shouldn't humans come with the same documentation? README acts as a living, breathing documentation of yourself:
           </p>
           <ul role="list">
-            <li>Quis elit egestas venenatis mattis dignissim.</li>
-            <li>Cras cras lobortis vitae vivamus ultricies facilisis tempus.</li>
-            <li>Orci in sit morbi dignissim metus diam arcu pretium.</li>
+            <li>Introduce your preferred communication methods.</li>
+            <li>Let peers know flaws you're working on fixing.</li>
+            <li>Learn about how people truly see themselves.</li>
           </ul>
-          <p>
-            Quis semper vulputate aliquam venenatis egestas sagittis quisque orci. Donec commodo sit viverra aliquam porttitor ultrices gravida eu. Tincidunt
-            leo, elementum mattis elementum ut nisl, justo, amet, mattis. Nunc purus, diam commodo tincidunt turpis. Amet, duis sed elit interdum dignissim.
-          </p>
+          <p>Let the world know who you are.</p>
           <div className="text-right">
             <Link href="/auth/login" passHref>
               <button

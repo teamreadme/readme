@@ -1,16 +1,7 @@
-import { ValidationError } from "joi";
-import { NextApiRequest, NextApiResponse, NextAuthenticatedApiRequest } from "next";
+import { NextApiResponse, NextAuthenticatedApiRequest } from "next";
 import { getSession } from "next-auth/react";
 import { NextHandler } from "next-connect";
-import withJoi from "next-joi";
 
-export default withJoi({
-  onValidationError: (_, res, error: ValidationError) => {
-    let errorMessage = error.details.map(({ message }) => message).join(", ");
-    console.log(errorMessage)
-    res.status(422).json({ error: errorMessage });
-  },
-});
 
 /**
  * Authenticates a request and attaches the session object

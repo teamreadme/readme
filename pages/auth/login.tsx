@@ -1,13 +1,33 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const session = useSession();
+
+  /**
+   * Redirect them if they're already logged in
+   */
+  useEffect(() => {
+    if (session) {
+      router.push("/me");
+    }
+  }, [session]);
+
+  /**
+   * Send the magic link upon sign in
+   * @param e
+   */
   async function signInClicked(e: any) {
+    setLoading(true);
     e.preventDefault();
-    await signIn("email", { email, redirect: true, callbackUrl: "/dashboard" });
+    await signIn("email", { email, redirect: true, callbackUrl: "/me" });
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -39,6 +59,7 @@ export default function Login() {
             <button
               onClick={signInClicked}
               type="submit"
+              disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
