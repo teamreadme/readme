@@ -2,12 +2,28 @@
 import { CustomElement, CustomText, SlateFormat } from "@/types";
 import classNames from "classnames";
 import isHotkey from "is-hotkey";
+import {
+  PersonIcon,
+  BoldIcon,
+  ItalicIcon,
+  ListOrderedIcon,
+  ListUnorderedIcon,
+  HeadingIcon,
+  NoteIcon,
+  CodeIcon,
+  QuoteIcon,
+  ThreeBarsIcon,
+  IconProps,
+  FilterIcon,
+} from "@primer/octicons-react";
 import Head from "next/head";
 import Link from "next/link";
 import { default as React, useState, useRef, useEffect, useCallback } from "react";
 import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, NodeMatch, Node } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSlate } from "slate-react";
-import { Button, Icon, Toolbar } from "./components";
+import { Button, Toolbar } from "./components";
+import { UnderlineIcon } from "./icons";
+import { prependOnceListener } from "process";
 
 interface EditorProps {
   initialData?: string | null;
@@ -44,24 +60,24 @@ export default function EditorComponent(props: EditorProps) {
       <Slate editor={editor} value={value} onChange={save}>
         {!props.readOnly && (
           <Toolbar className="border-b-2 border-gray-200 w-full p-4 flex">
-            <div className="flex-1 space-x-2">
-              <MarkButton format="bold" icon="format_bold" />
-              <MarkButton format="italic" icon="format_italic" />
-              <MarkButton format="underline" icon="format_underlined" />
-              <MarkButton format="code" icon="code" />
-              <BlockButton format="heading-one" icon="looks_one" />
-              <BlockButton format="heading-two" icon="looks_two" />
-              <BlockButton format="block-quote" icon="format_quote" />
-              <BlockButton format="numbered-list" icon="format_list_numbered" />
-              <BlockButton format="bulleted-list" icon="format_list_bulleted" />
-              <BlockButton format="left" icon="format_align_left" />
-              <BlockButton format="center" icon="format_align_center" />
-              <BlockButton format="right" icon="format_align_right" />
-              <BlockButton format="justify" icon="format_align_justify" />
+            <div className="flex-1 items-center flex space-x-2">
+              <MarkButton format="bold" Icon={BoldIcon} />
+              <MarkButton format="italic" Icon={ItalicIcon} />
+              <MarkButton format="underline" Icon={UnderlineIcon} />
+              <MarkButton format="code" Icon={CodeIcon} />
+              <BlockButton format="heading-one" Icon={HeadingIcon} />
+              <BlockButton format="heading-two" iconClassName="h-[14px]" Icon={HeadingIcon} />
+              <BlockButton format="block-quote" Icon={QuoteIcon} />
+              <BlockButton format="numbered-list" Icon={ListOrderedIcon} />
+              <BlockButton format="bulleted-list" Icon={ListUnorderedIcon} />
+              <BlockButton format="left" iconClassName="rotate-[270deg]" Icon={FilterIcon} />
+              <BlockButton format="center" iconClassName="" Icon={FilterIcon} />
+              <BlockButton format="right" iconClassName="rotate-[90deg]" Icon={FilterIcon} />
+              <BlockButton format="justify" Icon={ThreeBarsIcon} />
             </div>
             <Link href="/profile" passHref>
               <a title="Edit profile">
-                <Icon className="material-icons cursor-pointer">settings</Icon>
+                <PersonIcon size="medium" className="cursor-pointer h-[20px]" />
               </a>
             </Link>
           </Toolbar>
@@ -212,7 +228,17 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   return <span {...attributes}>{children}</span>;
 };
 
-const BlockButton = ({ format, icon }: { format: SlateFormat; icon: any }) => {
+const BlockButton = ({
+  format,
+  Icon,
+  iconClassName,
+  iconSize,
+}: {
+  format: SlateFormat;
+  Icon: React.FC<any>;
+  iconClassName?: string;
+  iconSize?: "small" | "medium" | "large";
+}) => {
   const editor = useSlate();
   return (
     <Button
@@ -222,12 +248,12 @@ const BlockButton = ({ format, icon }: { format: SlateFormat; icon: any }) => {
         toggleBlock(editor, format);
       }}
     >
-      <Icon>{icon}</Icon>
+      <Icon iconSize={iconSize} className={iconClassName} />
     </Button>
   );
 };
 
-const MarkButton = ({ format, icon }: { format: SlateFormat; icon: any }) => {
+const MarkButton = ({ format, Icon, iconClassName }: { format: SlateFormat; Icon: React.FC<any>; iconClassName?: string }) => {
   const editor = useSlate();
   return (
     <Button
@@ -237,7 +263,7 @@ const MarkButton = ({ format, icon }: { format: SlateFormat; icon: any }) => {
         toggleMark(editor, format);
       }}
     >
-      <Icon>{icon}</Icon>
+      <Icon className={iconClassName} />
     </Button>
   );
 };

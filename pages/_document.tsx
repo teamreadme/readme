@@ -6,9 +6,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=optional" rel="stylesheet" />
-        </Head>
+        <Head/>
         <body>
           <Main />
           <NextScript />

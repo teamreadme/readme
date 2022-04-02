@@ -65,7 +65,7 @@ export const EditorValue = React.forwardRef(
 EditorValue.displayName="EditorValue";
 
 export const Icon = React.forwardRef(({ className, ...props }: PropsWithChildren<BaseProps>, ref: Ref<HTMLSpanElement>) => (
-  <span {...props} ref={ref} className={classNames('material-icons', className, "text-lg align-bottom")} />
+  <span {...props} ref={ref} className={classNames(className, "text-lg align-bottom")} />
 ));
 Icon.displayName="EditorIcon";
 
