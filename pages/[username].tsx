@@ -8,6 +8,7 @@ import { prependOnceListener } from "process";
 import classNames from "classnames";
 import axios from "axios";
 import Link from "next/link";
+import { PersonIcon } from "@primer/octicons-react";
 
 export default function PublicProfile({ readMe }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: session } = useSession({ required: false });
@@ -60,6 +61,13 @@ export default function PublicProfile({ readMe }: InferGetServerSidePropsType<ty
               {readMe?.user.firstName} {readMe?.user.lastName}
             </span>
             <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
+            <div className="block sm:hidden text-center mt-2">
+              <Link href="/profile" passHref>
+                <a title="Edit profile" className="text-gray-500">
+                  Edit Profile
+                </a>
+              </Link>
+            </div>
           </h1>
           <EditorComponent
             onChange={save}
