@@ -39,7 +39,7 @@ export default function Homepage() {
             <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
           </h1>
           <p className="mt-8 text-xl text-gray-500 leading-8">
-            Outside of dating profiles and twitter bios, how much opportunity do people really have to communicate who they are online?
+            Outside of dating profiles and twitter bios, how much opportunity do you really have to communicate who you are online?
           </p>
         </div>
         <div className="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto">
