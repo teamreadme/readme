@@ -1,6 +1,6 @@
 import { redirectToLogin } from "@/utils/apiUtils";
 import { getSession } from "next-auth/react";
-import Link from "next/link";
+import { prisma } from "@/utils/prisma";
 
 export default function Me() {
   return <div></div>;
