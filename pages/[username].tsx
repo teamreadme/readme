@@ -18,13 +18,13 @@ export default function PublicProfile({ readMe, readMeUser }: InferGetServerSide
   const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
   const pageTitle = useMemo(() => {
     let out = "README | ";
-    if (readMe?.user.firstName) {
-      out += readMe.user.firstName;
-      if (readMe?.user.lastName) {
-        out += " " + readMe.user.lastName;
+    if (readMeUser?.firstName) {
+      out += readMeUser.firstName;
+      if (readMeUser.lastName) {
+        out += " " + readMeUser?.lastName;
       }
     } else {
-      out += readMe?.user.username;
+      out += readMeUser?.username;
     }
     return out;
   }, [readMe?.user]);
@@ -133,7 +133,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   if (username.startsWith("@")) {
     username = username.split("@")[1];
   }
-  const user = await prisma.user.findFirst({ where: { username: context.query.username } });
+  const user = await prisma.user.findFirst({
+    where: { username: context.query.username },
+    select: { username: true, firstName: true, lastName: true, id: true },
+  });
 
   if (user == null) {
     return {
