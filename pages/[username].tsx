@@ -95,13 +95,15 @@ export default function PublicProfile({ readMe, readMeUser }: InferGetServerSide
                 {readMe?.user.firstName} {readMe?.user.lastName}
               </span>
               <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
-              <div className="block sm:hidden text-center mt-2">
-                <Link href="/profile" passHref>
-                  <a title="Edit profile" className="text-gray-500">
-                    Edit Profile
-                  </a>
-                </Link>
-              </div>
+              {isUser && (
+                <div className="block sm:hidden text-center mt-2">
+                  <Link href="/profile" passHref>
+                    <a title="Edit profile" className="text-gray-500">
+                      Edit Profile
+                    </a>
+                  </Link>
+                </div>
+              )}
             </h1>
             <EditorComponent onChange={save} readOnly={!isUser} initialData={readMe?.text} className={classNames("shadow-md")} />
           </div>
