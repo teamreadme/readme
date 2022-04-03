@@ -13,9 +13,9 @@ import Head from "next/head";
 import { slateToText } from "@/utils/formatter";
 import user from "./api/user";
 
-export default function PublicProfile({ readMe }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function PublicProfile({ readMe, readMeUser }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: session } = useSession({ required: false });
-  const isUser = useMemo(() => readMe?.userId == session?.user.id, [readMe, session]);
+  const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
   const pageTitle = useMemo(() => {
     let out = "README | ";
     if (readMe?.user.firstName) {
@@ -148,5 +148,5 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     where: { user: { username } },
     include: { user: { select: { firstName: true, lastName: true, username: true } } },
   });
-  return { props: { readMe, session } };
+  return { props: { readMe, session, readMeUser: user } };
 };
