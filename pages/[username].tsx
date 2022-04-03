@@ -103,12 +103,7 @@ export default function PublicProfile({ readMe }: InferGetServerSidePropsType<ty
                 </Link>
               </div>
             </h1>
-            <EditorComponent
-              onChange={save}
-              readOnly={!isUser}
-              initialData={readMe?.text}
-              className={classNames('shadow-md')}
-            />
+            <EditorComponent onChange={save} readOnly={!isUser} initialData={readMe?.text} className={classNames("shadow-md")} />
           </div>
         </div>
       </div>
@@ -138,12 +133,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   if (username.startsWith("@")) {
     username = username.split("@")[1];
   }
-  const readMe = await prisma.readMe.findFirst({
-    where: { user: { username } },
-    include: { user: { select: { firstName: true, lastName: true, username: true } } },
-  });
+  const user = await prisma.user.findFirst({ where: { username: context.query.username } });
 
-  if (readMe == null) {
+  if (user == null) {
     return {
       redirect: {
         destination: "/404",
@@ -152,6 +144,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       props: {},
     };
   }
-
+  const readMe = await prisma.readMe.findFirst({
+    where: { user: { username } },
+    include: { user: { select: { firstName: true, lastName: true, username: true } } },
+  });
   return { props: { readMe, session } };
 };
