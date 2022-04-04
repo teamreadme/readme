@@ -17,7 +17,7 @@ declare module "next/types" {
   }
 }
 
-type CustomElement = { type: "paragraph" | "block-quote"; align?: string; children: CustomText[] };
+type CustomElement = { type: "paragraph" | "block-quote" | "link"; align?: string; children: CustomText[] };
 type CustomText = {
   text: string;
   bold?: boolean;

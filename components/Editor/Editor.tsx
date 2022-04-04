@@ -18,12 +18,13 @@ import {
 } from "@primer/octicons-react";
 import Head from "next/head";
 import Link from "next/link";
-import { default as React, useState, useRef, useEffect, useCallback } from "react";
+import { default as React, useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, NodeMatch, Node } from "slate";
 import { Slate, Editable, withReact, ReactEditor, useSlate } from "slate-react";
 import { Button, Toolbar } from "./components";
 import { UnderlineIcon } from "./icons";
 import { prependOnceListener } from "process";
+import { withHistory } from "slate-history";
 
 interface EditorProps {
   initialData?: string | null;
@@ -43,7 +44,7 @@ const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
 export default function EditorComponent(props: EditorProps) {
-  const [editor] = useState(() => withReact(createEditor()));
+  const editor = useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = useState<Descendant[]>(
     props.initialData
       ? JSON.parse(props.initialData)
@@ -65,7 +66,7 @@ export default function EditorComponent(props: EditorProps) {
   }
 
   return (
-    <div className={classNames("min-h-[500px] bg-white rounded-md mt-2", props.className)}>
+    <div className={classNames("max-h-[500px] overflow-auto bg-white rounded-md mt-2", props.className)}>
       <Slate editor={editor} value={value} onChange={save}>
         {!props.readOnly && (
           <Toolbar className="border-b-2 border-gray-200 w-full p-4 flex">
@@ -190,7 +191,7 @@ const Element = ({ attributes, children, element }: any) => {
       );
     case "heading-one":
       return (
-        <h1 className="text-xl" style={style} {...attributes}>
+        <h1 className="text-2xl font-bold" style={style} {...attributes}>
           {children}
         </h1>
       );
