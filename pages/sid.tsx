@@ -20,8 +20,8 @@ export default function Sid() {
       <Username session={null} readMeUser={readMeUser} readMe={readMe}>
         <p className="text-gray-500 mt-2 italic bg-gray-100 max-w-prose mx-auto">
           This page contains snippets from{" "}
-          <a href="https://about.gitlab.com/handbook/ceo/" className="hover:underline text-blue-400" target="_blank" rel="noopener noreferer">
-            Gitlab's Handbook
+          <a href="https://about.gitlab.com/handbook/ceo/" className="hover:underline text-blue-400" target="_blank" rel="noopener noreferrer">
+            Gitlab&apos;s Handbook
           </a>
           , Sid is not a user of this platform.
         </p>
