@@ -6,7 +6,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head/>
+        <Head>
+          <link rel="shortcut icon" href="/favicon.svg" />
+        </Head>
         <body className="bg-gray-100">
           <Main />
           <NextScript />

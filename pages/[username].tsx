@@ -1,22 +1,37 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { prisma } from "@/utils/prisma";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next/types";
-import { Editor } from "slate";
+import { Descendant, Editor } from "slate";
 import EditorComponent from "@/components/Editor/Editor";
 import { getSession, useSession } from "next-auth/react";
 import { prependOnceListener } from "process";
 import classNames from "classnames";
 import axios from "axios";
 import Link from "next/link";
+
 import { PersonIcon } from "@primer/octicons-react";
 import Head from "next/head";
-import { slateToText } from "@/utils/formatter";
+import { EMPTY_EDITOR, hashString, slateToText } from "@/utils/formatter";
 import user from "./api/user";
 import Layout from "@/components/Layout";
 import Inspiration from "@/components/Inspiration";
+import ReadMeMain from "@/components/ReadMeMain";
+import ReadMeAside from "@/components/ReadMeAside";
+import ReadMeTitle from "@/components/ReadMeTitle";
+import ReadMeContent from "@/components/ReadMeContent";
+import SuggestedTopics from "@/components/SuggestedTopics";
+import TableOfContentsProps from "@/components/TableOfContents";
+import TableOfContents from "@/components/TableOfContents";
 
-export default function PublicProfile({ readMe, readMeUser,children }: InferGetServerSidePropsType<typeof getServerSideProps>&{children?: React.ReactNode}) {
+export default function PublicProfile({
+  readMe,
+  readMeUser,
+  children,
+}: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
   const { data: session } = useSession({ required: false });
+  const [readMeData, setReadMeData] = useState(JSON.parse(readMe?.text ?? "[]"));
+  const [refreshEditor, setRefreshEditor] = useState(0);
+  const [appendSuggestion, setAppendSuggestion] = useState<Descendant[]>([]);
   const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
   const pageTitle = useMemo(() => {
     let out = "README | ";
@@ -31,6 +46,9 @@ export default function PublicProfile({ readMe, readMeUser,children }: InferGetS
     return out;
   }, [readMe?.user]);
 
+  /**
+   * Get a truncated page description for the meta tags
+   */
   const pageDescription = useMemo(() => {
     let text = slateToText(readMe?.text ? JSON.parse(readMe.text) : []);
     if (text.length > 255) {
@@ -41,13 +59,31 @@ export default function PublicProfile({ readMe, readMeUser,children }: InferGetS
   }, [readMe]);
 
   /**
-   * Update the readme on save
+   * Update the readme text
    * @param data
    */
-  async function save(data: string) {
+  async function save(data: Descendant[]) {
+    let stringifiedData = JSON.stringify(data);
+    if (stringifiedData == readMe?.text) return;
+    setReadMeData(data);
     await axios.patch("/api/readme", {
-      text: data,
+      text: stringifiedData,
     });
+  }
+
+  /**
+   * Insert and save a suggestion, then refresh the editor
+   * @param suggestion
+   */
+  async function insertSuggestion(suggestion: object[]) {
+    let newReadMeData = readMeData.concat(suggestion);
+    //If there's just an empty line in the text box, remove it
+    if (JSON.stringify(readMeData) == EMPTY_EDITOR) {
+      newReadMeData = suggestion;
+    }
+    setReadMeData(newReadMeData);
+    await save(newReadMeData);
+    setRefreshEditor(Math.random());
   }
 
   return (
@@ -58,32 +94,32 @@ export default function PublicProfile({ readMe, readMeUser,children }: InferGetS
         <meta name="description" content={pageDescription} />
         <meta property="og:title" content={pageTitle} key="ogtitle" />
         <meta property="og:description" content={pageDescription} key="ogdesc" />
-
         <title>{pageTitle}</title>
       </Head>
       <Layout>
-        <h1>
-          <span className="block text-base text-center text-indigo-600 font-semibold tracking-wide uppercase">
-            {readMe?.user.firstName} {readMe?.user.lastName}
-          </span>
-          <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">README</span>
-          {isUser && (
-            <div className="block sm:hidden text-center mt-2">
-              <Link href="/profile" passHref>
-                <a title="Edit profile" className="text-gray-500">
-                  Edit Profile
-                </a>
-              </Link>
-            </div>
-          )}
-        </h1>
-        <EditorComponent onChange={save} readOnly={!isUser} initialData={readMe?.text} className={classNames("shadow-md")} />
-        {children}
-        {isUser && (
-          <>
-            <Inspiration />
-          </>
-        )}
+        <ReadMeTitle firstName={readMe?.user.firstName ?? ""} lastName={readMe?.user.lastName ?? ""} isUser={isUser} />
+        <ReadMeContent>
+          <ReadMeAside>
+            {isUser && <SuggestedTopics onSuggestion={insertSuggestion} />}
+            {!isUser && <TableOfContents readMe={readMe!} />}
+          </ReadMeAside>
+          <ReadMeMain>
+            <EditorComponent
+              appendData={appendSuggestion}
+              key={`editor-refresh-${refreshEditor}`}
+              onChange={save}
+              readOnly={!isUser}
+              initialData={readMeData}
+              className={classNames("shadow-md")}
+            />
+            {children}
+            {isUser && (
+              <>
+                <Inspiration />
+              </>
+            )}
+          </ReadMeMain>
+        </ReadMeContent>
       </Layout>
     </>
   );

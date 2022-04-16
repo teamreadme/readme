@@ -23,12 +23,11 @@ import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, 
 import { Slate, Editable, withReact, ReactEditor, useSlate } from "slate-react";
 import { Button, Toolbar } from "./components";
 import { UnderlineIcon } from "./icons";
-import { prependOnceListener } from "process";
-import { withHistory } from "slate-history";
 
 interface EditorProps {
-  initialData?: string | null;
-  onChange?: (text: string) => void;
+  initialData?: Descendant[] | null;
+  onChange?: (text: Descendant[]) => void;
+  appendData?: Descendant[];
   readOnly?: boolean;
   className?: string;
 }
@@ -43,30 +42,37 @@ const HOTKEYS = {
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
+export const EDITOR_ID="editor-element";
+
 export default function EditorComponent(props: EditorProps) {
   const editor = useMemo(() => withReact(createEditor()), []);
-  const [value, setValue] = useState<Descendant[]>(
-    props.initialData
-      ? JSON.parse(props.initialData)
-      : [
-          {
-            type: "paragraph",
-            children: [{ text: "" }],
-          },
-        ]
-  );
+  const [value, setValue] = useState<Descendant[]>(getInitialData());
+
+  /**
+   * Get the initial data for the editor
+   * Occassionally the parent component wants us to append data and will force a re-render in that scenario
+   * @returns
+   */
+  function getInitialData() {
+    let out: Descendant[] = props.initialData || [];
+    if (props.appendData?.length) {
+      out = out.concat(props.appendData);
+    }
+    return out;
+  }
+
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
   function save(value: Descendant[]) {
     if (!props.readOnly) {
-      props.onChange?.(JSON.stringify(value));
+      props.onChange?.(value);
       setValue(value);
     }
   }
 
   return (
-    <div className={classNames("max-h-[500px] overflow-auto bg-white rounded-md mt-2", props.className)}>
+    <div className={classNames("max-h-[500px] overflow-auto bg-white rounded-md", props.className)}>
       <Slate editor={editor} value={value} onChange={save}>
         {!props.readOnly && (
           <Toolbar className="border-b-2 border-gray-200 w-full p-4 flex">
@@ -98,8 +104,9 @@ export default function EditorComponent(props: EditorProps) {
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           readOnly={props.readOnly}
+          id={EDITOR_ID}
           placeholder="Introduce yourself..."
-          className={classNames("p-4 min-h-[500px]", { "h-[500px] overflow-auto": !props.readOnly })}
+          className={classNames("p-4 min-h-[500px] scroll-smooth", { "h-[500px] overflow-auto": !props.readOnly })}
           spellCheck
           autoFocus
           onKeyDown={(event) => {
@@ -115,7 +122,7 @@ export default function EditorComponent(props: EditorProps) {
       </Slate>
     </div>
   );
-}
+} 
 
 const toggleBlock = (editor: ReactEditor, format: any) => {
   const isActive = isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? "align" : "type");
@@ -281,39 +288,3 @@ const MarkButton = ({ format, Icon, iconClassName }: { format: SlateFormat; Icon
     </Button>
   );
 };
-
-const initialValue: Descendant[] = [
-  {
-    type: "paragraph",
-    children: [
-      { text: "This is editable " },
-      { text: "rich", bold: true },
-      { text: " text, " },
-      { text: "much", italic: true },
-      { text: " better than a " },
-      { text: "<textarea>", code: true },
-      { text: "!" },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "Since it's rich text, you can do things like turn a selection of text ",
-      },
-      { text: "bold", bold: true },
-      {
-        text: ", or add a semantically rendered block quote in the middle of the page, like this:",
-      },
-    ],
-  },
-  {
-    type: "block-quote",
-    children: [{ text: "A wise quote." }],
-  },
-  {
-    type: "paragraph",
-    align: "center",
-    children: [{ text: "Try it out for yourself!" }],
-  },
-];

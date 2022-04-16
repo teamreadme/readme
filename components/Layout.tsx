@@ -36,9 +36,7 @@ export default function Layout(props: LayoutProps) {
             </svg>
           </div>
         </div>
-        <div className="relative px-4 sm:px-6 lg:px-8">
-          <main className="max-w-prose w-full z-10 isolate mx-auto">{props.children}</main>
-        </div>
+        <div className="relative px-4 sm:px-6 lg:px-8">{props.children}</div>
       </div>
     </>
   );
