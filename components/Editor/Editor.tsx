@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 import { default as React, useState, useRef, useMemo, useEffect } from "react";
 import { Editor as TinyMCEEditor } from 'tinymce';
+
 interface EditorProps {
   initialData?: string;
   onChange?: (text: string) => void;
@@ -107,7 +108,13 @@ export default function EditorComponent(props: EditorProps) {
             bold italic forecolor | alignleft aligncenter 
             alignright alignjustify | profile | bullist numlist outdent indent | 
             removeformat | help`,
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+            content_style: `
+            body { font-family:Helvetica,Arial,sans-serif; font-size:14px }
+            pre {
+              font-family: monospace;
+              white-space: pre-wrap;
+              padding: 8px;
+            }`
           }}
         />
       </div>
