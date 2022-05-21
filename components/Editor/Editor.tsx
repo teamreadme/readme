@@ -62,10 +62,28 @@ export default function EditorComponent(props: EditorProps) {
     })
   }, [props.scrollTo])
 
+  /**
+   * Save the contents of the editor
+   */
   function save() {
     if (!props.readOnly) {
       props.onChange?.(editorRef.current?.getContent() ?? '');
+
+      //Let the editor know we saved
+      editorRef.current?.save()
     }
+  }
+
+  /**
+   * For when the user manually hits the save button
+   */
+  function manualSave() {
+    save();
+    editorRef.current?.notificationManager.open({
+      text: 'README saved',
+      type: 'success',
+      timeout: 1000
+    });
   }
 
   return (
@@ -93,8 +111,8 @@ export default function EditorComponent(props: EditorProps) {
             menubar: false,
             plugins: [
               'lists', 'link',
-              'code', 'help',
-              'table'
+              'code', 'help', 'autosave',
+              'table', 'save'
             ],
             setup: (e) => {
               e.ui.registry.addButton("profile", {
@@ -104,9 +122,11 @@ export default function EditorComponent(props: EditorProps) {
                 },
               });
             },
-            toolbar: props.readOnly ? '' : `blocks | 
+            save_onsavecallback: manualSave,
+            save_enablewhendirty: false,
+            toolbar: `blocks | 
             bold italic forecolor | alignleft aligncenter 
-            alignright alignjustify | profile | bullist numlist outdent indent | 
+            alignright alignjustify | profile | save | bullist numlist outdent indent | 
             removeformat | help`,
             content_style: `
             body { font-family:Helvetica,Arial,sans-serif; font-size:14px }

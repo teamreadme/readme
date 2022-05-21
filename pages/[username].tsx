@@ -26,7 +26,7 @@ export default function PublicProfile({
   children,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
   const { data: session } = useSession({ required: false });
-  const [readMeData, setReadMeData] = useState(getReadMeData());
+  const readMeData = useMemo<string>(getReadMeData, []);
   const [refreshEditor, setRefreshEditor] = useState(0);
   const [appendSuggestion, setAppendSuggestion] = useState<string>();
   const [editorScrollTo, setEditorScrollTo] = useState<string>();
@@ -79,7 +79,6 @@ export default function PublicProfile({
    */
   async function save(data: string) {
     if (data == readMe?.text) return;
-    setReadMeData(data);
     await axios.patch("/api/readme", {
       text: data,
     });
