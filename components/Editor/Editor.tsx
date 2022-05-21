@@ -23,12 +23,14 @@ import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, 
 import { Slate, Editable, withReact, ReactEditor, useSlate } from "slate-react";
 import { Button, Toolbar } from "./components";
 import { UnderlineIcon } from "./icons";
+import { EMPTY_EDITOR, EMPTY_EDITOR_JSON } from "@/utils/formatter";
 
 interface EditorProps {
   initialData?: Descendant[] | null;
   onChange?: (text: Descendant[]) => void;
   appendData?: Descendant[];
   readOnly?: boolean;
+  placeholder?: string;
   className?: string;
 }
 
@@ -42,7 +44,7 @@ const HOTKEYS = {
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
-export const EDITOR_ID="editor-element";
+export const EDITOR_ID = "editor-element";
 
 export default function EditorComponent(props: EditorProps) {
   const editor = useMemo(() => withReact(createEditor()), []);
@@ -54,7 +56,7 @@ export default function EditorComponent(props: EditorProps) {
    * @returns
    */
   function getInitialData() {
-    let out: Descendant[] = props.initialData || [];
+    let out: Descendant[] = props.initialData?.length ? props.initialData : EMPTY_EDITOR_JSON;
     if (props.appendData?.length) {
       out = out.concat(props.appendData);
     }
@@ -105,7 +107,7 @@ export default function EditorComponent(props: EditorProps) {
           renderLeaf={renderLeaf}
           readOnly={props.readOnly}
           id={EDITOR_ID}
-          placeholder="Introduce yourself..."
+          placeholder={props.placeholder}
           className={classNames("p-4 min-h-[500px] scroll-smooth", { "h-[500px] overflow-auto": !props.readOnly })}
           spellCheck
           autoFocus
@@ -122,7 +124,7 @@ export default function EditorComponent(props: EditorProps) {
       </Slate>
     </div>
   );
-} 
+}
 
 const toggleBlock = (editor: ReactEditor, format: any) => {
   const isActive = isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? "align" : "type");

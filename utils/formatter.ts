@@ -1,10 +1,10 @@
 import classNames from "classnames";
-import { Node } from "slate";
+import { Descendant, Node } from "slate";
 
 export { classNames };
 
 export const slateToText = (nodes: Node[]) => {
-  return nodes.map((n) => Node.string(n)).join("n");
+  return nodes?.map((n) => Node.string(n)).join("\n");
 };
 
 export const hashString = (data: string) => {
@@ -20,4 +20,14 @@ export const hashString = (data: string) => {
   return hash;
 };
 
-export const EMPTY_EDITOR = JSON.stringify([{ type: "paragraph", children: [{ text: "" }] }]);
+/**
+ * Is the slte editor empty
+ * @param nodes
+ * @returns 
+ */
+export const isEmptySlate = (nodes: Node[]) => {
+  return JSON.stringify(nodes) == EMPTY_EDITOR;
+};
+
+export const EMPTY_EDITOR_JSON: Descendant[] = [{ type: "paragraph", children: [{ text: "" }] }];
+export const EMPTY_EDITOR = JSON.stringify(EMPTY_EDITOR_JSON);

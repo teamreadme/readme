@@ -27,6 +27,77 @@ const topics = [
     ],
   },
   {
+    title: "Childhood",
+    data: [
+      {
+        type: "heading-one",
+        children: [
+          {
+            text: "Growing up",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        children: [
+          {
+            text: "I grew up in ... and remember ... most from my childhood.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Strengths",
+    data: [
+      {
+        type: "heading-one",
+        children: [
+          {
+            text: "Strengths",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        children: [
+          {
+            text: "A couple major areas I am proud of are:",
+          },
+        ],
+      },
+      {
+        type: "numbered-list",
+        children: [
+          {
+            type: "list-item",
+            children: [
+              {
+                text: "...",
+              },
+            ],
+          },
+          {
+            type: "list-item",
+            children: [
+              {
+                text: "...",
+              },
+            ],
+          },
+          {
+            type: "list-item",
+            children: [
+              {
+                text: "...",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "Flaws",
     data: [
       {
@@ -71,6 +142,48 @@ const topics = [
                 text: "...",
               },
             ],
+          },
+        ],
+      },
+      {
+        title: "Communication Preferences",
+        data: [
+          {
+            type: "heading-one",
+            children: [
+              {
+                text: "Communication Preferences",
+              },
+            ],
+          },
+          {
+            type: "paragraph",
+            children: [
+              {
+                text: "I prefer to be contacted during ... via ...",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "The Future",
+    data: [
+      {
+        type: "heading-one",
+        children: [
+          {
+            text: "The Future",
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        children: [
+          {
+            text: "In the next 5 years I really hope to be ...",
           },
         ],
       },

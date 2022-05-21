@@ -11,7 +11,7 @@ import Link from "next/link";
 
 import { PersonIcon } from "@primer/octicons-react";
 import Head from "next/head";
-import { EMPTY_EDITOR, hashString, slateToText } from "@/utils/formatter";
+import { EMPTY_EDITOR, hashString, isEmptySlate, slateToText } from "@/utils/formatter";
 import user from "./api/user";
 import Layout from "@/components/Layout";
 import Inspiration from "@/components/Inspiration";
@@ -20,7 +20,7 @@ import ReadMeAside from "@/components/ReadMeAside";
 import ReadMeTitle from "@/components/ReadMeTitle";
 import ReadMeContent from "@/components/ReadMeContent";
 import SuggestedTopics from "@/components/SuggestedTopics";
-import TableOfContentsProps from "@/components/TableOfContents";
+import TableOfContentsProps, { hasTableOfContents } from "@/components/TableOfContents";
 import TableOfContents from "@/components/TableOfContents";
 
 export default function PublicProfile({
@@ -78,7 +78,7 @@ export default function PublicProfile({
   async function insertSuggestion(suggestion: object[]) {
     let newReadMeData = readMeData.concat(suggestion);
     //If there's just an empty line in the text box, remove it
-    if (JSON.stringify(readMeData) == EMPTY_EDITOR) {
+    if (isEmptySlate(readMeData)) {
       newReadMeData = suggestion;
     }
     setReadMeData(newReadMeData);
@@ -99,15 +99,24 @@ export default function PublicProfile({
       <Layout>
         <ReadMeTitle firstName={readMe?.user.firstName ?? ""} lastName={readMe?.user.lastName ?? ""} isUser={isUser} />
         <ReadMeContent>
-          <ReadMeAside>
-            {isUser && <SuggestedTopics onSuggestion={insertSuggestion} />}
-            {!isUser && <TableOfContents readMe={readMe!} />}
-          </ReadMeAside>
+          {isUser && (
+            <ReadMeAside>
+              <SuggestedTopics onSuggestion={insertSuggestion} />
+            </ReadMeAside>
+          )}
+
+          {!isUser && hasTableOfContents(readMe?.text) && (
+            <ReadMeAside>
+              <TableOfContents readMe={readMe!} />
+            </ReadMeAside>
+          )}
+
           <ReadMeMain>
             <EditorComponent
               appendData={appendSuggestion}
               key={`editor-refresh-${refreshEditor}`}
               onChange={save}
+              placeholder={isUser ? "Introduce yourself..." : "Coming soon..."}
               readOnly={!isUser}
               initialData={readMeData}
               className={classNames("shadow-md")}
