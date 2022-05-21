@@ -34,7 +34,7 @@ const topics = [
   {
     title: "Flaws",
     data: `
-    <h1>Strengths</h1>
+    <h1>Flaws</h1>
     <p>A couple major areas I am working on improving are:<p>
     <ol>
     <li>...</li>
