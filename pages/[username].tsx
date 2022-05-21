@@ -18,6 +18,7 @@ import SuggestedTopics from "@/components/SuggestedTopics";
 import { hasTableOfContents } from "@/components/TableOfContents";
 import TableOfContents from "@/components/TableOfContents";
 import NoSSR from "@/components/NoSSR";
+import user from "./api/user";
 
 export default function PublicProfile({
   readMe,
@@ -29,9 +30,8 @@ export default function PublicProfile({
   const [refreshEditor, setRefreshEditor] = useState(0);
   const [appendSuggestion, setAppendSuggestion] = useState<string>();
   const [editorScrollTo, setEditorScrollTo] = useState<string>();
-  const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
-  const pageTitle = useMemo(() => {
-    let out = "README | ";
+  const userDisplayName = useMemo(() => {
+    let out = '';
     if (readMeUser?.firstName) {
       out += readMeUser.firstName;
       if (readMeUser.lastName) {
@@ -41,7 +41,9 @@ export default function PublicProfile({
       out += readMeUser?.username;
     }
     return out;
-  }, [readMe?.user]);
+  }, [readMeUser])
+  const pageTitle = useMemo(() => `README | ${userDisplayName}`, [readMe?.user]);
+  const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
 
   /**
    * We originally used Slate which stored data in a JSON format
@@ -102,7 +104,7 @@ export default function PublicProfile({
         <title>{pageTitle}</title>
       </Head>
       <Layout>
-        <ReadMeTitle firstName={readMe?.user.firstName ?? ""} lastName={readMe?.user.lastName ?? ""} isUser={isUser} />
+        <ReadMeTitle name={userDisplayName} isUser={isUser} />
         <ReadMeContent>
           {isUser && (
             <ReadMeAside>

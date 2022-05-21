@@ -4,8 +4,7 @@ import React from "react";
 import LogoWithText from "./LogoWithText";
 
 interface ReadMeTitleProps {
-  firstName: string;
-  lastName: string;
+  name: string;
   isUser: boolean;
 }
 
@@ -13,7 +12,7 @@ export default function ReadMeTitle(props: ReadMeTitleProps) {
   return (
     <>
       <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
-        {props.firstName} {props.lastName}
+        {props.name}
       </span>
       <LogoWithText />
       {props.isUser && (

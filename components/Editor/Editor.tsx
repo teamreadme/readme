@@ -1,5 +1,6 @@
 import { Editor } from "@tinymce/tinymce-react";
 import classNames from "classnames";
+import { useRouter } from "next/router";
 import { default as React, useState, useRef, useMemo, useEffect } from "react";
 import { Editor as TinyMCEEditor } from 'tinymce';
 interface EditorProps {
@@ -23,7 +24,7 @@ export const EDITOR_ID = "editor-element";
 export default function EditorComponent(props: EditorProps) {
   const value = useMemo(() => getInitialData(), []);
   const [loading, setLoading] = useState(true);
-
+  const router = useRouter();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   /**
    * Get the initial data for the editor
@@ -90,12 +91,20 @@ export default function EditorComponent(props: EditorProps) {
             menubar: false,
             plugins: [
               'lists', 'link',
-              'code',
+              'code', 'help',
               'table'
             ],
+            setup: (e) => {
+              e.ui.registry.addButton("profile", {
+                icon: "user",
+                onAction: () => {
+                  router.push("/profile")
+                },
+              });
+            },
             toolbar: props.readOnly ? '' : `blocks | 
             bold italic forecolor | alignleft aligncenter 
-            alignright alignjustify | bullist numlist outdent indent | 
+            alignright alignjustify | profile | bullist numlist outdent indent | 
             removeformat | help`,
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
           }}
