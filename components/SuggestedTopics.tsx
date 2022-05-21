@@ -1,193 +1,54 @@
 import React from "react";
 
 interface SuggestedTopicsProps {
-  onSuggestion: (topic: object[]) => void;
+  onSuggestion: (topic: string) => void;
 }
 
 const topics = [
   {
     title: "Communication Preferences",
-    data: [
-      {
-        type: "heading-one",
-        children: [
-          {
-            text: "Communication Preferences",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "I prefer to be contacted during ... via ...",
-          },
-        ],
-      },
-    ],
+    data: `
+  <h1>Communication Preferences</h1>
+    <p>I prefer to be contacted during ... via ...</p>
+  `
   },
   {
     title: "Childhood",
-    data: [
-      {
-        type: "heading-one",
-        children: [
-          {
-            text: "Growing up",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "I grew up in ... and remember ... most from my childhood.",
-          },
-        ],
-      },
-    ],
+    data: `
+    <h1>Growing up</h1>
+    <p>I grew up in ... and remember ... most from my childhood</p>
+    `
   },
   {
     title: "Strengths",
-    data: [
-      {
-        type: "heading-one",
-        children: [
-          {
-            text: "Strengths",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "A couple major areas I am proud of are:",
-          },
-        ],
-      },
-      {
-        type: "numbered-list",
-        children: [
-          {
-            type: "list-item",
-            children: [
-              {
-                text: "...",
-              },
-            ],
-          },
-          {
-            type: "list-item",
-            children: [
-              {
-                text: "...",
-              },
-            ],
-          },
-          {
-            type: "list-item",
-            children: [
-              {
-                text: "...",
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    data: `
+    <h1>Strengths</h1>
+    <p>A couple major areas I am proud of are:<p>
+    <ol>
+    <li>...</li>
+    <li>...</li>
+    <li>...</li>
+    </ol>
+    `
   },
   {
     title: "Flaws",
-    data: [
-      {
-        type: "heading-one",
-        children: [
-          {
-            text: "Flaws",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "A couple major areas I am working on improving are:",
-          },
-        ],
-      },
-      {
-        type: "numbered-list",
-        children: [
-          {
-            type: "list-item",
-            children: [
-              {
-                text: "...",
-              },
-            ],
-          },
-          {
-            type: "list-item",
-            children: [
-              {
-                text: "...",
-              },
-            ],
-          },
-          {
-            type: "list-item",
-            children: [
-              {
-                text: "...",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: "Communication Preferences",
-        data: [
-          {
-            type: "heading-one",
-            children: [
-              {
-                text: "Communication Preferences",
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            children: [
-              {
-                text: "I prefer to be contacted during ... via ...",
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    data: `
+    <h1>Strengths</h1>
+    <p>A couple major areas I am working on improving are:<p>
+    <ol>
+    <li>...</li>
+    <li>...</li>
+    <li>...</li>
+    </ol>
+    `
   },
   {
     title: "The Future",
-    data: [
-      {
-        type: "heading-one",
-        children: [
-          {
-            text: "The Future",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "In the next 5 years I really hope to be ...",
-          },
-        ],
-      },
-    ],
+    data: `
+    <h1>The Future</h1>
+    <p>In the next 5 years I really hope to ... </p>
+    `
   },
 ];
 

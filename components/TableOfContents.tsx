@@ -1,12 +1,10 @@
-import { isEmptySlate } from "@/utils/formatter";
 import { ReadMe } from "@prisma/client";
 import classNames from "classnames";
 import React, { useMemo } from "react";
-import { Descendant } from "slate";
-import { EDITOR_ID } from "./Editor/Editor";
 
 interface TableOfContentsProps {
   readMe: ReadMe;
+  onClick?: (title: string) => void;
 }
 
 /**
@@ -23,46 +21,28 @@ export function hasTableOfContents(readMeText?: string | null) {
  * @param readMeText
  * @returns
  */
-function getTableOfContents(readMeText?: string | null) {
-  let data: Descendant[] = JSON.parse(readMeText ?? "[]");
-  if (!data || isEmptySlate(data)) return null;
-  return data
-    .map((item: any, index: number) => {
-      if (item.type.startsWith("heading")) {
-        return (
-          <div key={`heading-${index}`} className={classNames("hover:underline cursor-pointer", { "ml-4": item.type == "heading-two" })}>
-            <a onClick={() => onClick(item.children[0].text, item.type)}>{item.children[0].text}</a>
-          </div>
-        );
-      }
-    })
-    .filter((v) => v != undefined);
+function getTableOfContents(readMeText: string | null | undefined, onClick?: (content: string) => void) {
+  let parser = new DOMParser();
+  const doc = parser.parseFromString(readMeText ?? '', 'text/html');
+  let headers = doc.querySelectorAll('h1,h2');
+  if (!headers?.length) return null;
+  let out: any[] = [];
+  headers.forEach((item: any, index: number) => {
+    out.push(<div key={`heading-${index}`} className={classNames("hover:underline cursor-pointer", { "ml-4": item.tagName == "H2" })}>
+      <a onClick={() => onClick?.(item.textContent)}>{item.textContent}</a>
+    </div>)
+  })
+  return out
 }
 
-/**
- * Scroll the clicked header into view. I've yet to find a better way of doing this
- * @param title
- * @param type
- * @returns
- */
-function onClick(title: string, type: "heading-one" | "heading-two") {
-  let elements = document.getElementById(EDITOR_ID)?.getElementsByTagName(type == "heading-one" ? "h1" : "h2");
-  if (!elements) return;
-  for (var i = 0; i < elements.length; i++) {
-    if (elements[i].innerText == title) {
-      elements[i].scrollIntoView({ behavior: "smooth" });
-      break;
-    }
-  }
-}
 
 export default function TableOfContents(props: TableOfContentsProps) {
-  const toc = useMemo(() => getTableOfContents(props.readMe?.text), [props.readMe]);
+  const toc = useMemo(() => getTableOfContents(props.readMe?.text, props.onClick), [props.readMe]);
 
   return (
     <div>
       <h2 className="font-bold text-2l">Table of Contents</h2>
-      {toc}
+      {toc?.length ? toc : <p className="text-gray-600 italic text-sm">Content coming soon</p>}
     </div>
   );
 }

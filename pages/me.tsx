@@ -15,6 +15,7 @@ export async function getServerSideProps(context: any) {
     if (!user) {
       return redirectToLogin();
     }
+    console.log(user)
     return {
       redirect: {
         destination: `/${user.username}`,

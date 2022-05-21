@@ -1,292 +1,108 @@
-// Inspired by https://github.com/ianstormtaylor/slate/blob/main/site/examples/richtext.tsx
-import { CustomElement, CustomText, SlateFormat } from "@/types";
+import { Editor } from "@tinymce/tinymce-react";
 import classNames from "classnames";
-import isHotkey from "is-hotkey";
-import {
-  PersonIcon,
-  BoldIcon,
-  ItalicIcon,
-  ListOrderedIcon,
-  ListUnorderedIcon,
-  HeadingIcon,
-  NoteIcon,
-  CodeIcon,
-  QuoteIcon,
-  ThreeBarsIcon,
-  IconProps,
-  FilterIcon,
-} from "@primer/octicons-react";
-import Head from "next/head";
-import Link from "next/link";
-import { default as React, useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, NodeMatch, Node } from "slate";
-import { Slate, Editable, withReact, ReactEditor, useSlate } from "slate-react";
-import { Button, Toolbar } from "./components";
-import { UnderlineIcon } from "./icons";
-import { EMPTY_EDITOR, EMPTY_EDITOR_JSON } from "@/utils/formatter";
-
+import { default as React, useState, useRef, useMemo, useEffect } from "react";
+import { Editor as TinyMCEEditor } from 'tinymce';
 interface EditorProps {
-  initialData?: Descendant[] | null;
-  onChange?: (text: Descendant[]) => void;
-  appendData?: Descendant[];
-  readOnly?: boolean;
+  initialData?: string;
+  onChange?: (text: string) => void;
+  /**
+   * When this prop is changed, its value is appended to the editor's content
+   */
+  appendData?: string;
   placeholder?: string;
+  readOnly?: boolean;
+  /**
+   * When this prop is changed, the editor is scrolled to the first H1 or H2 matching its value
+   */
+  scrollTo?: string;
   className?: string;
 }
-
-const HOTKEYS = {
-  "mod+b": "bold",
-  "mod+i": "italic",
-  "mod+u": "underline",
-  "mod+`": "code",
-};
-
-const LIST_TYPES = ["numbered-list", "bulleted-list"];
-const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
 export const EDITOR_ID = "editor-element";
 
 export default function EditorComponent(props: EditorProps) {
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const [value, setValue] = useState<Descendant[]>(getInitialData());
+  const value = useMemo(() => getInitialData(), []);
+  const [loading, setLoading] = useState(true);
 
+  const editorRef = useRef<TinyMCEEditor | null>(null);
   /**
    * Get the initial data for the editor
    * Occassionally the parent component wants us to append data and will force a re-render in that scenario
    * @returns
    */
   function getInitialData() {
-    let out: Descendant[] = props.initialData?.length ? props.initialData : EMPTY_EDITOR_JSON;
+    let out: string = props.initialData ?? props.placeholder ?? '';
     if (props.appendData?.length) {
       out = out.concat(props.appendData);
     }
     return out;
   }
 
-  const renderElement = useCallback((props) => <Element {...props} />, []);
-  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+  /**
+   * When the user selects a suggested section, append it to the content
+   */
+  useEffect(() => {
+    if (!props.appendData) return;
+    let content = editorRef.current?.getContent() ?? '';
+    content += props.appendData
+    editorRef.current?.setContent(content);
+  }, [props.appendData])
 
-  function save(value: Descendant[]) {
+  useEffect(() => {
+    let elements = editorRef.current?.getBody().querySelectorAll('h1,h2').values();
+    if (!elements) return;
+    Array.from(elements).every((element) => {
+      if (element.textContent == props.scrollTo) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        return false;
+      }
+      return true;
+    })
+  }, [props.scrollTo])
+
+  function save(value?: string) {
     if (!props.readOnly) {
-      props.onChange?.(value);
-      setValue(value);
+      props.onChange?.(value ?? '');
     }
   }
 
   return (
-    <div className={classNames("max-h-[500px] overflow-auto bg-white rounded-md", props.className)}>
-      <Slate editor={editor} value={value} onChange={save}>
-        {!props.readOnly && (
-          <Toolbar className="border-b-2 border-gray-200 w-full p-4 flex">
-            <div className="flex-1 items-center flex space-x-2">
-              <MarkButton format="bold" Icon={BoldIcon} />
-              <MarkButton format="italic" Icon={ItalicIcon} />
-              <MarkButton format="underline" Icon={UnderlineIcon} />
-              <MarkButton format="code" Icon={CodeIcon} />
-              <BlockButton format="heading-one" Icon={HeadingIcon} />
-              <BlockButton format="heading-two" iconClassName="h-[14px]" Icon={HeadingIcon} />
-              <BlockButton format="block-quote" Icon={QuoteIcon} />
-              <BlockButton format="numbered-list" Icon={ListOrderedIcon} />
-              <BlockButton format="bulleted-list" Icon={ListUnorderedIcon} />
-              <BlockButton format="left" iconClassName="rotate-[270deg]" Icon={FilterIcon} />
-              <BlockButton format="center" iconClassName="" Icon={FilterIcon} />
-              <BlockButton format="right" iconClassName="rotate-[90deg]" Icon={FilterIcon} />
-              <BlockButton format="justify" Icon={ThreeBarsIcon} />
-            </div>
-            <div className="hidden sm:block">
-              <Link href="/profile" passHref>
-                <a title="Edit profile">
-                  <PersonIcon size="medium" className="cursor-pointer h-[20px]" />
-                </a>
-              </Link>
-            </div>
-          </Toolbar>
-        )}
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          readOnly={props.readOnly}
+    <div className={classNames("max-h-[500px] overflow-auto rounded-md", props.className)}>
+
+      <div className={classNames("h-[450px] w-full animate-pulse bg-gray-300 rounded-md", { 'hidden': !loading })}>
+        &nbsp;
+      </div>
+      <div className={classNames({ 'h-0': loading })}>
+        <Editor
           id={EDITOR_ID}
-          placeholder={props.placeholder}
-          className={classNames("p-4 min-h-[500px] scroll-smooth", { "h-[500px] overflow-auto": !props.readOnly })}
-          spellCheck
-          autoFocus
-          onKeyDown={(event) => {
-            for (const hotkey in HOTKEYS) {
-              if (isHotkey(hotkey, event as any)) {
-                event.preventDefault();
-                const mark = (HOTKEYS as any)[hotkey];
-                toggleMark(editor, mark);
-              }
-            }
+          tinymceScriptSrc='/tinymce/tinymce.min.js'
+          onInit={(evt, editor) => {
+            editorRef.current = editor
+            setLoading(false);
+          }}
+          disabled={props.readOnly}
+          initialValue={value}
+          onChange={(e) => save(editorRef.current?.getContent())}
+          init={{
+            height: 450,
+            branding: false,
+            statusbar: false,
+            menubar: false,
+            plugins: [
+              'lists', 'link',
+              'code',
+              'table'
+            ],
+            toolbar: props.readOnly ? '' : `blocks | 
+            bold italic forecolor | alignleft aligncenter 
+            alignright alignjustify | bullist numlist outdent indent | 
+            removeformat | help`,
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
           }}
         />
-      </Slate>
+      </div>
+
     </div>
+
   );
-}
-
-const toggleBlock = (editor: ReactEditor, format: any) => {
-  const isActive = isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? "align" : "type");
-  const isList = LIST_TYPES.includes(format);
-
-  Transforms.unwrapNodes(editor, {
-    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type) && !TEXT_ALIGN_TYPES.includes(format),
-    split: true,
-  });
-  let newProperties: Partial<SlateElement>;
-  if (TEXT_ALIGN_TYPES.includes(format) && !isActive) {
-    newProperties = {
-      align: format,
-    };
-  } else {
-    newProperties = {
-      type: isActive ? "paragraph" : isList ? "list-item" : format,
-    };
-  }
-  Transforms.setNodes<SlateElement>(editor, newProperties);
-
-  if (!isActive && isList) {
-    const block: CustomElement = { type: format, children: [] };
-    Transforms.wrapNodes(editor, block);
-  }
-};
-
-const toggleMark = (editor: ReactEditor, format: any) => {
-  const isActive = isMarkActive(editor, format);
-
-  if (isActive) {
-    Editor.removeMark(editor, format);
-  } else {
-    Editor.addMark(editor, format, true);
-  }
-};
-
-const isBlockActive = (editor: ReactEditor, format: any, blockType: "align" | "type" = "type") => {
-  const { selection } = editor;
-  if (!selection) return false;
-
-  const [match] = Array.from(
-    Editor.nodes(editor, {
-      at: Editor.unhangRange(editor, selection),
-      match: (n: any) => !Editor.isEditor(n) && SlateElement.isElement(n) && n[blockType] === format,
-    })
-  );
-
-  return !!match;
-};
-
-const isMarkActive = (editor: ReactEditor, format: SlateFormat) => {
-  const marks = Editor.marks(editor);
-  return marks ? marks[format] === true : false;
-};
-
-const Element = ({ attributes, children, element }: any) => {
-  const style = { textAlign: element.align };
-  switch (element.type) {
-    case "block-quote":
-      return (
-        <div className="prose">
-          <blockquote className="prose-blockquote" style={style} {...attributes}>
-            {children}
-          </blockquote>
-        </div>
-      );
-    case "bulleted-list":
-      return (
-        <ul className="list-disc my-2 pl-8" style={style} {...attributes}>
-          {children}
-        </ul>
-      );
-    case "heading-one":
-      return (
-        <h1 className="text-2xl font-bold" style={style} {...attributes}>
-          {children}
-        </h1>
-      );
-    case "heading-two":
-      return (
-        <h2 className="text-lg" style={style} {...attributes}>
-          {children}
-        </h2>
-      );
-    case "list-item":
-      return (
-        <li style={style} {...attributes}>
-          {children}
-        </li>
-      );
-    case "numbered-list":
-      return (
-        <ol className="list-decimal my-2 pl-8" style={style} {...attributes}>
-          {children}
-        </ol>
-      );
-    default:
-      return (
-        <p style={style} {...attributes}>
-          {children}
-        </p>
-      );
-  }
-};
-
-const Leaf = ({ attributes, children, leaf }: any) => {
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
-  }
-
-  if (leaf.code) {
-    children = <code className="bg-gray-200 p-1">{children}</code>;
-  }
-
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-
-  return <span {...attributes}>{children}</span>;
-};
-
-const BlockButton = ({
-  format,
-  Icon,
-  iconClassName,
-  iconSize,
-}: {
-  format: SlateFormat;
-  Icon: React.FC<any>;
-  iconClassName?: string;
-  iconSize?: "small" | "medium" | "large";
-}) => {
-  const editor = useSlate();
-  return (
-    <Button
-      active={isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? "align" : "type")}
-      onMouseDown={(event: any) => {
-        event.preventDefault();
-        toggleBlock(editor, format);
-      }}
-    >
-      <Icon iconSize={iconSize} className={iconClassName} />
-    </Button>
-  );
-};
-
-const MarkButton = ({ format, Icon, iconClassName }: { format: SlateFormat; Icon: React.FC<any>; iconClassName?: string }) => {
-  const editor = useSlate();
-  return (
-    <Button
-      active={isMarkActive(editor, format)}
-      onMouseDown={(event: any) => {
-        event.preventDefault();
-        toggleMark(editor, format);
-      }}
-    >
-      <Icon className={iconClassName} />
-    </Button>
-  );
-};
+} 

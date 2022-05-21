@@ -20,14 +20,12 @@ export const hashString = (data: string) => {
   return hash;
 };
 
+
 /**
- * Is the slte editor empty
- * @param nodes
+ * Remove any HTML elements from the string
+ * @param text 
  * @returns 
  */
-export const isEmptySlate = (nodes: Node[]) => {
-  return JSON.stringify(nodes) == EMPTY_EDITOR;
-};
-
-export const EMPTY_EDITOR_JSON: Descendant[] = [{ type: "paragraph", children: [{ text: "" }] }];
-export const EMPTY_EDITOR = JSON.stringify(EMPTY_EDITOR_JSON);
+export const stripHtml = (text: string) => {
+  return text.replace(/<\/?[^>]+(>|$)/g, "");
+}

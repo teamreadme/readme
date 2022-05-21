@@ -16,7 +16,7 @@ export default NextAuth({
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verifyRequest", // (used for check email message)
-    newUser: "/auth/register", // New users will be directed here on first sign in (leave the property out if not of interest)
+    newUser: "/me", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   callbacks: {
     session: async ({ session, user }) => {
@@ -25,6 +25,13 @@ export default NextAuth({
       }
       return session;
     },
+    // NextAuth has a built-in function where if a user signs in but doesn't have an account,
+    // it'll send them a registration email. However, we have a custom API for registration that we want to use
+    // so deny any requests on here for new users.
+    async signIn({ user }) {
+      if (user.id === user.email) return `/auth/error?error=${encodeURIComponent("Please register an account first")}`;
+      return true;
+    }
   },
   providers: [
     EmailProvider({

@@ -1,18 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { prisma } from "@/utils/prisma";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next/types";
-import { Descendant, Editor } from "slate";
 import EditorComponent from "@/components/Editor/Editor";
 import { getSession, useSession } from "next-auth/react";
-import { prependOnceListener } from "process";
 import classNames from "classnames";
 import axios from "axios";
-import Link from "next/link";
 
-import { PersonIcon } from "@primer/octicons-react";
 import Head from "next/head";
-import { EMPTY_EDITOR, hashString, isEmptySlate, slateToText } from "@/utils/formatter";
-import user from "./api/user";
+import { slateToText, stripHtml } from "@/utils/formatter";
 import Layout from "@/components/Layout";
 import Inspiration from "@/components/Inspiration";
 import ReadMeMain from "@/components/ReadMeMain";
@@ -20,8 +15,9 @@ import ReadMeAside from "@/components/ReadMeAside";
 import ReadMeTitle from "@/components/ReadMeTitle";
 import ReadMeContent from "@/components/ReadMeContent";
 import SuggestedTopics from "@/components/SuggestedTopics";
-import TableOfContentsProps, { hasTableOfContents } from "@/components/TableOfContents";
+import { hasTableOfContents } from "@/components/TableOfContents";
 import TableOfContents from "@/components/TableOfContents";
+import NoSSR from "@/components/NoSSR";
 
 export default function PublicProfile({
   readMe,
@@ -29,9 +25,10 @@ export default function PublicProfile({
   children,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
   const { data: session } = useSession({ required: false });
-  const [readMeData, setReadMeData] = useState(JSON.parse(readMe?.text ?? "[]"));
+  const [readMeData, setReadMeData] = useState(getReadMeData());
   const [refreshEditor, setRefreshEditor] = useState(0);
-  const [appendSuggestion, setAppendSuggestion] = useState<Descendant[]>([]);
+  const [appendSuggestion, setAppendSuggestion] = useState<string>();
+  const [editorScrollTo, setEditorScrollTo] = useState<string>();
   const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
   const pageTitle = useMemo(() => {
     let out = "README | ";
@@ -47,11 +44,27 @@ export default function PublicProfile({
   }, [readMe?.user]);
 
   /**
+   * We originally used Slate which stored data in a JSON format
+   * Use this to check if the data is in that saved format. If so, just take the raw text
+   * none of our users had used the Slate formatting heavily yet.
+   * TODO: This can be removed by July 2022
+   * @returns
+   */
+  function getReadMeData() {
+    try {
+      let slate = JSON.parse(readMe?.text ?? '');
+      return slateToText(slate);
+    } catch (err) {
+      return readMe?.text ?? ''
+    }
+  }
+
+  /**
    * Get a truncated page description for the meta tags
    */
   const pageDescription = useMemo(() => {
-    let text = slateToText(readMe?.text ? JSON.parse(readMe.text) : []);
-    if (text.length > 255) {
+    let text = stripHtml(readMeData);
+    if (readMeData.length > 255) {
       return text.substring(0, 255) + "...";
     } else {
       return text;
@@ -62,12 +75,11 @@ export default function PublicProfile({
    * Update the readme text
    * @param data
    */
-  async function save(data: Descendant[]) {
-    let stringifiedData = JSON.stringify(data);
-    if (stringifiedData == readMe?.text) return;
+  async function save(data: string) {
+    if (data == readMe?.text) return;
     setReadMeData(data);
     await axios.patch("/api/readme", {
-      text: stringifiedData,
+      text: data,
     });
   }
 
@@ -75,15 +87,8 @@ export default function PublicProfile({
    * Insert and save a suggestion, then refresh the editor
    * @param suggestion
    */
-  async function insertSuggestion(suggestion: object[]) {
-    let newReadMeData = readMeData.concat(suggestion);
-    //If there's just an empty line in the text box, remove it
-    if (isEmptySlate(readMeData)) {
-      newReadMeData = suggestion;
-    }
-    setReadMeData(newReadMeData);
-    await save(newReadMeData);
-    setRefreshEditor(Math.random());
+  async function insertSuggestion(suggestion: string) {
+    setAppendSuggestion(suggestion);
   }
 
   return (
@@ -104,18 +109,18 @@ export default function PublicProfile({
               <SuggestedTopics onSuggestion={insertSuggestion} />
             </ReadMeAside>
           )}
-
-          {!isUser && hasTableOfContents(readMe?.text) && (
-            <ReadMeAside>
-              <TableOfContents readMe={readMe!} />
-            </ReadMeAside>
-          )}
-
+          <NoSSR>
+            {!isUser && (
+              <ReadMeAside>
+                <TableOfContents onClick={setEditorScrollTo} readMe={readMe!} />
+              </ReadMeAside>
+            )}
+          </NoSSR>
           <ReadMeMain>
             <EditorComponent
               appendData={appendSuggestion}
-              key={`editor-refresh-${refreshEditor}`}
               onChange={save}
+              scrollTo={editorScrollTo}
               placeholder={isUser ? "Introduce yourself..." : "Coming soon..."}
               readOnly={!isUser}
               initialData={readMeData}
