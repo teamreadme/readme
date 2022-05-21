@@ -61,9 +61,9 @@ export default function EditorComponent(props: EditorProps) {
     })
   }, [props.scrollTo])
 
-  function save(value?: string) {
+  function save() {
     if (!props.readOnly) {
-      props.onChange?.(value ?? '');
+      props.onChange?.(editorRef.current?.getContent() ?? '');
     }
   }
 
@@ -83,7 +83,8 @@ export default function EditorComponent(props: EditorProps) {
           }}
           disabled={props.readOnly}
           initialValue={value}
-          onChange={(e) => save(editorRef.current?.getContent())}
+          onBlur={() => save()}
+          onChange={() => save()}
           init={{
             height: 450,
             branding: false,
