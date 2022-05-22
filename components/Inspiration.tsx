@@ -14,7 +14,7 @@ export default function Inspiration() {
           <span className="pr-3 bg-gray-100 text-2xl font-bold text-gray-900">Looking for inspiration?</span>
         </div>
       </div>
-      <div className="flex flex-col divide-y-4 mt-2 divide-gray-300">
+      <div className="flex flex-col mt-2">
         <Link href="/jreynoldsdev">
           <div className="bg-white hover:shadow-md cursor-pointer transition rounded-md p-4">
             <h2 className="text-lg font-bold">Jake Reynolds</h2>
@@ -22,7 +22,7 @@ export default function Inspiration() {
           </div>
         </Link>
         <Link href="/sid">
-          <div className="bg-white hover:shadow-md cursor-pointer transition rounded-md p-4">
+          <div className="bg-white mt-2 hover:shadow-md cursor-pointer transition rounded-md p-4">
             <h2 className="text-lg font-bold">Sid Sijbrandij</h2>
             <p>Co-founder, CEO, Gitlab</p>
           </div>
