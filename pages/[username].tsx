@@ -106,13 +106,13 @@ export default function PublicProfile({
         <ReadMeTitle name={userDisplayName} isUser={isUser} />
         <ReadMeContent>
           {isUser && (
-            <ReadMeAside>
+            <ReadMeAside className="hidden mb-4 2xl:mb-0 md:block">
               <SuggestedTopics onSuggestion={insertSuggestion} />
             </ReadMeAside>
           )}
           <NoSSR>
             {!isUser && (
-              <ReadMeAside>
+              <ReadMeAside className="hidden mb-4 2xl:mb-0 md:block">
                 <TableOfContents onClick={setEditorScrollTo} readMe={readMe!} />
               </ReadMeAside>
             )}

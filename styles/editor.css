@@ -1,3 +1,7 @@
 .tox-tinymce--disabled .tox-editor-header {
     display: none;
 }
+
+.tox-tinymce {
+    border: none !important;
+}
