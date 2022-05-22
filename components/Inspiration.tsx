@@ -15,6 +15,12 @@ export default function Inspiration() {
         </div>
       </div>
       <div className="flex flex-col divide-y mt-2 divide-gray-300">
+        <Link href="/jreynoldsdev">
+          <div className="bg-white hover:shadow-md cursor-pointer transition rounded-md p-4">
+            <h2 className="text-lg font-bold">Jake Reynolds</h2>
+            <p>Founder, README</p>
+          </div>
+        </Link>
         <Link href="/sid">
           <div className="bg-white hover:shadow-md cursor-pointer transition rounded-md p-4">
             <h2 className="text-lg font-bold">Sid Sijbrandij</h2>
