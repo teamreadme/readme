@@ -121,6 +121,7 @@ export default function PublicProfile({
             <EditorComponent
               appendData={appendSuggestion}
               onChange={save}
+              key={`readme-editor-${isUser ? session?.user.id : readMeUser?.id}`}
               scrollTo={editorScrollTo}
               placeholder={isUser ? "Introduce yourself..." : "Coming soon..."}
               readOnly={!isUser}
