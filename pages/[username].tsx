@@ -26,8 +26,7 @@ export default function PublicProfile({
   children,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
   const { data: session } = useSession({ required: false });
-  const readMeData = useMemo<string>(getReadMeData, []);
-  const [refreshEditor, setRefreshEditor] = useState(0);
+  const readMeData = useMemo<string>(getReadMeData, [readMe]);
   const [appendSuggestion, setAppendSuggestion] = useState<string>();
   const [editorScrollTo, setEditorScrollTo] = useState<string>();
   const userDisplayName = useMemo(() => {
