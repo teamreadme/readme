@@ -87,9 +87,8 @@ export default function EditorComponent(props: EditorProps) {
   }
 
   return (
-    <div className={classNames("max-h-[500px] overflow-auto rounded-md", props.className)}>
-
-      <div className={classNames("h-[450px] w-full animate-pulse bg-gray-300 rounded-md", { 'hidden': !loading })}>
+    <div className={classNames("max-h-[70vh] overflow-auto rounded-md", props.className)}>
+      <div className={classNames("h-[70vh] w-full animate-pulse bg-gray-300 rounded-md", { 'hidden': !loading })}>
         &nbsp;
       </div>
       <div className={classNames({ 'h-0': loading })}>
@@ -105,7 +104,7 @@ export default function EditorComponent(props: EditorProps) {
           onBlur={() => save()}
           onChange={() => save()}
           init={{
-            height: 450,
+            height: '70vh',
             branding: false,
             statusbar: false,
             menubar: false,
