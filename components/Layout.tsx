@@ -36,7 +36,7 @@ export default function Layout(props: LayoutProps) {
           </div>
         </div>
         <div className="relative px-4 z-20 sm:px-6 lg:px-8 pb-8">{props.children}</div>
-        <div className="relative mb-4 flex justify-center text-sm"><a target="_blank" rel="noopener noreferer" className="text-gray-600 hover:underline" href="https://twitter.com/teamreadme">Twitter</a>&nbsp;|&nbsp;<a target="_blank" className="text-gray-600 hover:underline" href="/PrivacyPolicy.pdf">Privacy Policy</a></div>
+        <div className="relative mb-4 flex justify-center text-sm"><a target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:underline" href="https://twitter.com/teamreadme">Twitter</a>&nbsp;|&nbsp;<a target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:underline" href="/PrivacyPolicy.pdf">Privacy Policy</a></div>
       </div>
   );
 }
