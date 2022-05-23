@@ -29,7 +29,7 @@ function getTableOfContents(readMeText: string | null | undefined, onClick?: (co
   let out: any[] = [];
   headers.forEach((item: any, index: number) => {
     out.push(<div key={`heading-${index}`} className={classNames("hover:underline cursor-pointer", { "ml-4": item.tagName == "H2" })}>
-      <a onClick={() => onClick?.(item.textContent)}>{item.textContent}</a>
+      <a className="text-gray-700" onClick={() => onClick?.(item.textContent)}>{item.textContent}</a>
     </div>)
   })
   return out
