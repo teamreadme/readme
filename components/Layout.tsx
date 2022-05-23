@@ -6,7 +6,6 @@ interface LayoutProps {
 
 export default function Layout(props: LayoutProps) {
   return (
-    <>
       <div className="relative pt-8 min-h-screen flex flex-col justify-center bg-gray-100 overflow-hidden">
         <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
           <div className="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
@@ -36,8 +35,8 @@ export default function Layout(props: LayoutProps) {
             </svg>
           </div>
         </div>
-        <div className="relative px-4 sm:px-6 lg:px-8">{props.children}</div>
+        <div className="relative px-4 z-20 sm:px-6 lg:px-8 pb-8">{props.children}</div>
+        <div className="relative mb-4 flex justify-center text-sm"><a target="_blank" rel="noopener noreferer" className="text-gray-600 hover:underline" href="https://twitter.com/teamreadme">Twitter</a>&nbsp;|&nbsp;<a target="_blank" className="text-gray-600 hover:underline" href="/PrivacyPolicy.pdf">Privacy Policy</a></div>
       </div>
-    </>
   );
 }
