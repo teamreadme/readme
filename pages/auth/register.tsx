@@ -4,6 +4,7 @@ import { ExclamationIcon, LockClosedIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import classNames from "classnames";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -48,7 +49,7 @@ export default function Register() {
             </div>
           )}
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8" action="#" method="POST">
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -68,7 +69,8 @@ export default function Register() {
               />
             </div>
           </div>
-          <div>
+          <p className="text-gray-600 italic text-sm mt-1">By registering you agree to our <a target="_blank" href="/TermsOfService.pdf">Terms of Service</a>.</p>
+          <div className="mt-4">
             <Button disabled={registering} onClick={signInClicked}>
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <LockClosedIcon
