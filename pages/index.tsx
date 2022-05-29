@@ -55,7 +55,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
     return (
         <>
-            <div className="relative lg:flex bg-gray-100 overflow-hidden">
+            <div className="relative mb-32 lg:flex bg-gray-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative z-10 pb-8 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                         <Popover>
