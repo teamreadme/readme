@@ -7,6 +7,7 @@ import Logo from '@/components/Logo'
 import ReadMeTitle from '@/components/ReadMeTitle'
 import Link from 'next/link'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import LogoWithText from '@/components/LogoWithText';
 
 const features = [
     {
@@ -55,7 +56,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
     return (
         <>
-            <div className="relative mb-32 lg:flex bg-gray-100 overflow-hidden">
+            <div className="relative lg:mb-32 lg:flex bg-gray-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative z-10 pb-8 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                         <Popover>
@@ -65,7 +66,8 @@ export default function Home({
                                         <div className="flex items-center justify-between w-full md:w-auto">
                                             <a href="#">
                                                 <span className="sr-only">README</span>
-                                                <Logo
+                                                <LogoWithText
+                                                    noLogoMargin={true}
                                                     className="h-8 w-auto sm:h-10" />
                                             </a>
                                             <div className="-mr-2 flex items-center md:hidden">
@@ -157,7 +159,9 @@ export default function Home({
                 </div>
                 <div className="hidden lg:flex lg:w-1/2 w-full mt-10 mr-10 flex-col justify-center items-center">
                     <div>
-                        <ReadMeTitle name={"Jake Reynolds"} isUser={false} />
+                        <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
+                            Jake Reynolds
+                        </span>
                         <div className="bg-white prose overflow-y-auto mt-4 p-4 h-[500px] rounded-md"><div dangerouslySetInnerHTML={{ __html: readMe?.text ?? '' }}></div></div>
                         <p className="text-gray-600 mt-2 text-sm italic self-start">The above snippets come from an <Link href="/jreynoldsdev">actual README</Link>!</p>
                     </div>
