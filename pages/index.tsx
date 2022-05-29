@@ -133,20 +133,22 @@ export default function Home({
                                 </p>
                                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                                     <div className="rounded-md shadow">
-                                        <a
+                                        <Link
                                             href="/auth/register"
-                                            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 md:py-4 md:text-lg md:px-10"
                                         >
-                                            Get started
-                                        </a>
+                                            <button
+                                                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 md:py-4 md:text-lg md:px-10"
+                                            >Get started</button>
+                                        </Link>
                                     </div>
                                     <div className="mt-3 sm:mt-0 sm:ml-3">
-                                        <a
+                                        <Link
                                             href="/auth/login"
-                                            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 md:py-4 md:text-lg md:px-10"
                                         >
-                                            Log in
-                                        </a>
+                                            <button
+                                                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 md:py-4 md:text-lg md:px-10"
+                                            >Log in</button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -283,12 +285,11 @@ export default function Home({
                     </h2>
                     <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
                         <div className="inline-flex rounded-md shadow">
-                            <a
-                                href="/auth/register"
-                                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
-                            >
-                                Get started
-                            </a>
+                            <Link href="/auth/register">
+                                <button
+                                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
+                                >Get started</button>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -298,7 +299,7 @@ export default function Home({
                 <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
                     <div className="flex justify-center space-x-6 md:order-2">
                         {navigation.social.map((item) => (
-                            <a target="_blank" rel="noopener noreferer" key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
+                            <a target="_blank" rel="noopener noreferrer" key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
                                 <span className="sr-only">{item.name}</span>
                                 <item.icon className="h-6 w-6" aria-hidden="true" />
                             </a>
