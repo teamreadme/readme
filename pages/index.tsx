@@ -114,12 +114,15 @@ export default function Home({
                                             </a>
                                         ))}
                                     </div>
-                                    <a
-                                        href="#"
-                                        className="block w-full px-5 py-3 text-center font-medium text-purple-600 bg-gray-50 hover:bg-gray-100"
+                                    <Link
+                                        href="/auth/login"
                                     >
-                                        Log in
-                                    </a>
+                                        <span
+                                            className="block cursor-pointer w-full px-5 py-3 text-center font-medium text-purple-600 bg-gray-50 hover:bg-gray-100"
+                                        >
+                                            Log in
+                                        </span>
+                                    </Link>
                                 </div>
                             </Popover.Panel>
                         </Popover>
