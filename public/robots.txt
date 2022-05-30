@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://readmefirst.co
+
+# Sitemaps
+Sitemap: https://readmefirst.co/sitemap.xml
+Sitemap: https://readmefirst.co/server-sitemap.xml

@@ -6,6 +6,7 @@ import matter from 'gray-matter';
 import fs from 'fs';
 import { InferGetServerSidePropsType } from "next";
 import BlogHeader from "@/components/BlogHeader";
+import Head from "next/head";
 
 
 export default function Blog({
@@ -13,7 +14,19 @@ export default function Blog({
 }: InferGetServerSidePropsType<typeof getStaticProps>) {
     return (
         <>
-
+            <Head>
+                <title>README Blog</title>
+                <meta property="title" content="README Blog" />
+                <meta property="og:title" content="README Blog" />
+                <meta property="og:type" content="blog" />
+                <meta property="og:url" content={`https://readmefirst.co/blog/`} />
+                <meta property="og:image" content={`https://readmefirst.co/library.jpg`} />
+                <meta name="twitter:title" content="README Blog" />
+                <meta name="description" content="Stay up-to-date with README" />
+                <meta name="twitter:description" content="Stay up-to-date with README" />
+                <meta name="twitter:image" content={`https://readmefirst.co/library.jpg`} />
+                <meta name="twitter:card" content="summary_large_image" />
+            </Head>
             <BlogHeader title="Learn more about README" description={<span>Ready to get started? Create an account <Link href="/auth/register" passHref={true}><a className="text-white underline">here</a></Link>.</span>} imageUrl="/library.jpg" />
             <div className="pb-20 px-4 sm:px-6 lg:pt-8 lg:pb-28 lg:px-8">
                 <div className="relative max-w-lg mx-auto divide-y-2 divide-gray-200 lg:max-w-7xl">
