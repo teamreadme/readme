@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { prisma } from "@/utils/prisma";
 import { Popover, Transition } from '@headlessui/react'
 import { GlobeAltIcon, LightningBoltIcon, MailIcon, MenuIcon, ScaleIcon, XIcon } from '@heroicons/react/outline'
@@ -8,6 +8,10 @@ import ReadMeTitle from '@/components/ReadMeTitle'
 import Link from 'next/link'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import LogoWithText from '@/components/LogoWithText';
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import classNames from 'classnames';
 
 const features = [
     {
@@ -18,7 +22,7 @@ const features = [
     {
         name: 'Increase accessibility',
         description:
-            'Navigating the social mindfield that is life can be difficult for many. Help make sure everyone\'s working with the same information.',
+            'Navigating the social minefield that is life can be difficult for many. Help make sure everyone\'s working with the same information.',
         icon: ScaleIcon,
     },
     {
@@ -37,6 +41,7 @@ const features = [
 
 const navigation: { main: { name: string, href: string }[], social: any[] } = {
     main: [
+        { name: 'Blog', href: '/blog' }
     ],
     social: [
         {
@@ -54,6 +59,23 @@ const navigation: { main: { name: string, href: string }[], social: any[] } = {
 export default function Home({
     readMe,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
+    const [registering, setRegistering] = useState(false);
+    const [email, setEmail] = useState<string>();
+    const [error, setError] = useState<string>();
+    const router = useRouter();
+    async function signInClicked(e: any) {
+        e.preventDefault();
+        try {
+            setRegistering(true);
+            await axios.put("/api/auth/register", { email });
+            await signIn("email", { email, redirect: false, callbackUrl: "/me" });
+            router.push("/auth/verifyRequest");
+        } catch (err: any) {
+            if (err.response.data) {
+                setError(err.response.data.error);
+            }
+        }
+    }
     return (
         <>
             <div className="relative lg:mb-32 lg:flex bg-gray-100 overflow-hidden">
@@ -64,12 +86,12 @@ export default function Home({
                                 <nav className="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
                                     <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                                         <div className="flex items-center justify-between w-full md:w-auto">
-                                            <a href="#">
+                                            <Link href="/">
                                                 <span className="sr-only">README</span>
                                                 <LogoWithText
                                                     noLogoMargin={true}
-                                                    className="h-8 w-auto sm:h-10" />
-                                            </a>
+                                                />
+                                            </Link>
                                             <div className="-mr-2 flex items-center md:hidden">
                                                 <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
                                                     <span className="sr-only">Open main menu</span>
@@ -80,10 +102,17 @@ export default function Home({
                                     </div>
                                     <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
                                         {navigation.main.map((item) => (
-                                            <a key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
-                                                {item.name}
-                                            </a>
+                                            <Link key={item.name} href={item.href} passHref={true}>
+                                                <a className="font-medium text-gray-500 hover:text-gray-900">
+                                                    {item.name}
+                                                </a>
+                                            </Link>
                                         ))}
+                                        <Link href="/auth/login" passHref={true}>
+                                            <a className="font-medium text-purple-600 hover:text-purple-500">
+                                                Log in
+                                            </a>
+                                        </Link>
                                     </div>
                                 </nav>
                             </div>
@@ -136,36 +165,40 @@ export default function Home({
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                                     Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to the world, learn about others, and make every day interactions more enjoyable.
                                 </p>
-                                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                                    <div className="rounded-md shadow">
-                                        <Link
-                                            href="/auth/register"
+                                <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
+                                    <form onSubmit={signInClicked} className="mt-3 sm:flex">
+                                        <label htmlFor="email" className="sr-only">
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            id="email"
+                                            className="block w-full py-3 text-base rounded-md placeholder-gray-500 shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:flex-1 border-gray-300"
+                                            placeholder="Enter your email"
+                                        />
+                                        <button
+                                            type="submit"
+                                            disabled={registering}
+                                            onClick={signInClicked}
+                                            className={classNames("mt-3 w-full px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-800 shadow-sm hover:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:mt-0 sm:ml-3 sm:flex-shrink-0 sm:inline-flex sm:items-center sm:w-auto",
+                                                { 'bg-purple-300': registering })}
                                         >
-                                            <button
-                                                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 md:py-4 md:text-lg md:px-10"
-                                            >Get started</button>
-                                        </Link>
-                                    </div>
-                                    <div className="mt-3 sm:mt-0 sm:ml-3">
-                                        <Link
-                                            href="/auth/login"
-                                        >
-                                            <button
-                                                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200 md:py-4 md:text-lg md:px-10"
-                                            >Log in</button>
-                                        </Link>
-                                    </div>
+                                            Get Started
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </main>
                     </div>
                 </div>
-                <div className="hidden lg:flex lg:w-1/2 w-full mt-10 mr-10 flex-col justify-center items-center">
+                <div className="hidden lg:flex lg:w-1/2 w-full mt-16 mr-10 flex-col justify-center items-center">
                     <div>
                         <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
                             Jake Reynolds
                         </span>
-                        <div className="bg-white prose overflow-y-auto mt-4 p-4 h-[500px] rounded-md"><div dangerouslySetInnerHTML={{ __html: readMe?.text ?? '' }}></div></div>
+                        <div className="bg-white prose prose-h1:m-0 prose-h2:m-0 prose-p:my-4 overflow-y-auto mt-4 p-4 h-[500px] rounded-md"><div dangerouslySetInnerHTML={{ __html: readMe?.text ?? '' }}></div></div>
                         <p className="text-gray-600 mt-2 text-sm italic self-start">The above snippets come from an <Link href="/jreynoldsdev">actual README</Link>!</p>
                     </div>
                 </div>
