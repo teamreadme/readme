@@ -12,15 +12,17 @@ import { Prisma } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const url = process.env.SITE_URL || 'https://readmefirst.co';
     let usernames = [];
-    let userQuery: Prisma.UserFindManyArgs = { take: 1, select: { username: true, id: true }, orderBy: { id: 'desc' } };
-    // https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination
-    // Initiate the first query
-    let users = await prisma.user.findMany(userQuery)
-    let cursor: string = users[users.length - 1]?.id;
+
+    let userQuery: Prisma.UserFindManyArgs = { take: 1000, select: { username: true, id: true }, orderBy: { id: 'desc' } };
+    let cursor: string | undefined;
 
     // Paginate through all users
     do {
-        let users = await prisma.user.findMany({ ...userQuery, skip: 1, cursor: { id: cursor } });
+        let query = { ...userQuery };
+        if (cursor) {
+            query = { ...query, skip: 1, cursor: { id: cursor } };
+        }
+        let users = await prisma.user.findMany(query);
         usernames.push(...users.map((user) => user.username));
         cursor = users[users.length - 1]?.id
     } while (cursor != null);
