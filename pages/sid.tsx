@@ -1,9 +1,11 @@
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { getSession } from "next-auth/react";
 import React, { useMemo } from "react";
 import User from "./api/user";
 
 import PublicProfile from "./[username]";
 
-export default function Sid() {
+export default function Sid({ userSession }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const readMeUser = useMemo(() => {
     return { id: "-1", firstName: "Sid", lastName: "Sijbrandij", username: "sid" };
   }, []);
@@ -18,7 +20,7 @@ export default function Sid() {
   }, []);
   return (
     <>
-      <PublicProfile userSession={null} readMeUser={readMeUser} readMe={readMe}>
+      <PublicProfile userSession={userSession} readMeUser={readMeUser} readMe={readMe}>
         <p className="text-gray-500 mt-2 italic bg-gray-100 max-w-prose mx-auto">
           This page contains snippets from{" "}
           <a href="https://about.gitlab.com/handbook/ceo/" className="hover:underline text-blue-400" target="_blank" rel="noopener noreferrer">
@@ -30,3 +32,16 @@ export default function Sid() {
     </>
   );
 }
+
+
+/**
+ * Load a public, unauthenticated readme profile
+ * @param context
+ * @returns
+ */
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const session = await getSession(context);
+
+
+  return { props: { userSession: session } };
+};
