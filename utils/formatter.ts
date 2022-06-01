@@ -41,7 +41,7 @@ export const userToName = (user: { firstName?: string | null, lastName?: string 
  * @returns 
  */
 export const stripHtml = (text?: string | null) => {
-  let strippedHtml = text?.replace('</h1>', '. ').replace('</h2>', '. ').replace(/<\/?[^>]+(>|$)/g, "") ?? '';
+  let strippedHtml = text?.replace('</h1>', '. ').replace('</h2>', '. ').replace('</h3>', '. ').replace(/<\/?[^>]+(>|$)/g, "") ?? '';
   
   //Decode HTML entities, i.e. &nbsp;
   return he.decode(strippedHtml);
