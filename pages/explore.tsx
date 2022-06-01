@@ -13,6 +13,7 @@ import { getSearchResults } from './api/readme';
 import { getPopularReadMes } from './api/readme/popular';
 import numeral from 'numeral';
 import { Session } from '@prisma/client';
+import Head from 'next/head';
 
 
 /**
@@ -47,6 +48,9 @@ export default function Explore({
     }, [search])
 
     return <Layout authenticated={userSession != null}>
+        <Head>
+            <title>Explore | README</title>
+        </Head>
         <ReadMeContent>
             <ReadMeMain>
                 <div className="max-w-prose flex flex-col 2xl:min-h-[90vh] mx-auto">

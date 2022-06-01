@@ -15,15 +15,6 @@ interface LayoutProps {
   authenticated: boolean;
 }
 
-const authNavigation = [
-  { name: 'Explore', href: '/explore' }
-]
-
-const unauthNavigation = [
-  { name: 'Blog', href: '/blog' },
-  { name: 'Login', href: '/auth/login', className: 'text-purple-600 hover:text-purple-500' }
-];
-
 export default function Layout(props: LayoutProps) {
   return (
     <>
