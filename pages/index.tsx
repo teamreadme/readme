@@ -96,7 +96,7 @@ export default function Home({
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                                     Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to the world, learn about others, and make every day interactions more enjoyable.
                                 </p>
-                                <p className="text-gray-500 text-lg lg:hidden mt-8">How does it work? Check out an example <Link href="/jreynoldsdev">here!</Link></p>
+                                <p className="text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:hidden mt-8">How does it work? Check out an example <Link href="/jreynoldsdev">here!</Link></p>
                                 <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                                     <form onSubmit={signInClicked} className="mt-3 sm:flex">
                                         <label htmlFor="email" className="sr-only">
