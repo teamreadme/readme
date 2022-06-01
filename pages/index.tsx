@@ -9,9 +9,10 @@ import Link from 'next/link'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import LogoWithText from '@/components/LogoWithText';
 import axios from 'axios';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import AppNav from '@/components/AppNav';
 
 const features = [
     {
@@ -58,6 +59,7 @@ const navigation: { main: { name: string, href: string }[], social: any[] } = {
 
 export default function Home({
     readMe,
+    userSession
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
     const [registering, setRegistering] = useState(false);
     const [email, setEmail] = useState<string>();
@@ -78,81 +80,12 @@ export default function Home({
     }
     return (
         <>
+            <AppNav authenticated={userSession != null} />
             <div className="relative lg:mb-32 lg:flex bg-gray-100 overflow-hidden">
+
                 <div className="max-w-7xl mx-auto">
                     <div className="relative z-10 pb-8 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-                        <Popover>
-                            <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
-                                <nav className="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
-                                    <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-                                        <div className="flex items-center justify-between w-full md:w-auto">
-                                            <span className="sr-only">README</span>
-                                            <LogoWithText
-                                                noLogoMargin={true}
-                                            />
-                                            <div className="-mr-2 flex items-center md:hidden">
-                                                <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
-                                                    <span className="sr-only">Open main menu</span>
-                                                    <MenuIcon className="h-6 w-6" aria-hidden="true" />
-                                                </Popover.Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-                                        {navigation.main.map((item) => (
-                                            <Link key={item.name} href={item.href} passHref={true}>
-                                                <a className="font-medium text-gray-500 hover:text-gray-900">
-                                                    {item.name}
-                                                </a>
-                                            </Link>
-                                        ))}
-                                        <Link href="/auth/login" passHref={true}>
-                                            <a className="font-medium text-purple-600 hover:text-purple-500">
-                                                Log in
-                                            </a>
-                                        </Link>
-                                    </div>
-                                </nav>
-                            </div>
-                            <Popover.Panel
-                                focus
-                                className="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden"
-                            >
-                                <div className="rounded-lg shadow-md bg-gray-100 ring-1 ring-black ring-opacity-5 overflow-hidden">
-                                    <div className="px-5 pt-4 flex items-center justify-between">
-                                        <div>
-                                            <Logo className="h-8 w-auto"></Logo>
-                                        </div>
-                                        <div className="-mr-2">
-                                            <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
-                                                <span className="sr-only">Close main menu</span>
-                                                <XIcon className="h-6 w-6" aria-hidden="true" />
-                                            </Popover.Button>
-                                        </div>
-                                    </div>
-                                    <div className="px-2 pt-2 pb-3 space-y-1">
-                                        {navigation.main.map((item) => (
-                                            <a
-                                                key={item.name}
-                                                href={item.href}
-                                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                                            >
-                                                {item.name}
-                                            </a>
-                                        ))}
-                                    </div>
-                                    <Link
-                                        href="/auth/login"
-                                    >
-                                        <span
-                                            className="block cursor-pointer w-full px-5 py-3 text-center font-medium text-purple-600 bg-gray-50 hover:bg-gray-100"
-                                        >
-                                            Log in
-                                        </span>
-                                    </Link>
-                                </div>
-                            </Popover.Panel>
-                        </Popover>
+
 
                         <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                             <div className="sm:text-center lg:text-left">
@@ -163,6 +96,7 @@ export default function Home({
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                                     Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to the world, learn about others, and make every day interactions more enjoyable.
                                 </p>
+                                <p className="text-gray-500 text-lg lg:hidden mt-8">How does it work? Check out an example <Link href="/jreynoldsdev">here!</Link></p>
                                 <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                                     <form onSubmit={signInClicked} className="mt-3 sm:flex">
                                         <label htmlFor="email" className="sr-only">
@@ -363,5 +297,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         where: { user: { username: 'jreynoldsdev' } },
         include: { user: { select: { firstName: true, lastName: true, username: true } } },
     });
-    return { props: { readMe } };
+    const userSession = await getSession(context);
+
+    return { props: { readMe, userSession } };
 };

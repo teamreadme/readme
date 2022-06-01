@@ -11,10 +11,9 @@ interface ReadMeTitleProps {
 export default function ReadMeTitle(props: ReadMeTitleProps) {
   return (
     <>
-      <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
+      <span className="block text-2xl text-center text-purple-600 font-semibold tracking-wide uppercase">
         {props.name}
       </span>
-      <LogoWithText />
       {props.isUser && (
         <div className="block sm:hidden text-center mt-2">
           <Link href="/profile" passHref>

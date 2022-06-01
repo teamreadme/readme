@@ -26,8 +26,8 @@ export default function BlogHeader(props: BlogHeaderProps) {
             </Link>
         </div>
         <div className="absolute top-4 sm:top-8 right-8 text-white items-end space-x-4">
-            <Link passHref={true} href="/"><a className="text-white text-lg">Home</a></Link>
-            <Link passHref={true} href="/auth/login"><a className="text-white text-lg">Login</a></Link>
+            <Link passHref={true} href="/"><a className="rounded-md text-base font-medium text-white hover:text-gray-200 ">Home</a></Link>
+            <Link passHref={true} href="/auth/login"><a className="rounded-md text-base font-medium text-white hover:text-gray-200">Log in</a></Link>
         </div>
         <div className="relative px-8">
             <div className="relative text-lg font-medium text-white md:flex-grow">

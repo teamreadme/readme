@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -45,7 +46,7 @@ model User {
   firstName     String?   @map("first_name")
   lastName      String?   @map("last_name")
   email         String?   @unique
-  username      String? 
+  username      String
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -67,7 +68,8 @@ model VerificationToken {
 model ReadMe {
   id     String  @id @default(cuid())
   text   String?
-  userId String  @map("user_id")@unique
+  reads  Int     @default(0)
+  userId String  @unique @map("user_id")
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("read_me")

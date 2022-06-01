@@ -1,12 +1,34 @@
-import React from "react";
+import { Popover } from "@headlessui/react";
+import { MenuIcon } from "@heroicons/react/outline";
+import { XIcon } from "@primer/octicons-react";
+import classNames from "classnames";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import React, { useMemo } from "react";
+import AppNav from "./AppNav";
+import Footer from "./Footer";
+import Logo from "./Logo";
+import LogoWithText from "./LogoWithText";
 
 interface LayoutProps {
   children: React.ReactNode;
+  authenticated: boolean;
 }
+
+const authNavigation = [
+  { name: 'Explore', href: '/explore' }
+]
+
+const unauthNavigation = [
+  { name: 'Blog', href: '/blog' },
+  { name: 'Login', href: '/auth/login', className: 'text-purple-600 hover:text-purple-500' }
+];
 
 export default function Layout(props: LayoutProps) {
   return (
-      <div className="relative pt-8 min-h-screen flex flex-col justify-center bg-gray-100 overflow-hidden">
+    <>
+      <AppNav authenticated={props.authenticated} />
+      <div className="relative min-h-screen flex flex-col bg-gray-100 overflow-hidden">
         <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
           <div className="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
             <svg className="absolute top-12 left-full transform translate-x-32" width={404} height={384} fill="none" viewBox="0 0 404 384">
@@ -36,7 +58,8 @@ export default function Layout(props: LayoutProps) {
           </div>
         </div>
         <div className="relative px-4 z-20 sm:px-6 lg:px-8 pb-8">{props.children}</div>
-        <div className="relative mb-4 flex justify-center text-sm"><a target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:underline" href="https://twitter.com/teamreadme">Twitter</a>&nbsp;|&nbsp;<a target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:underline" href="/PrivacyPolicy.pdf">Privacy Policy</a></div>
+        <Footer/>
       </div>
+    </>
   );
 }

@@ -23,9 +23,9 @@ import user from "./api/user";
 export default function PublicProfile({
   readMe,
   readMeUser,
+  userSession,
   children,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
-  const { data: session } = useSession({ required: false });
   const readMeData = useMemo<string>(getReadMeData, [readMe]);
   const [appendSuggestion, setAppendSuggestion] = useState<string>();
   const [editorScrollTo, setEditorScrollTo] = useState<string>();
@@ -42,7 +42,7 @@ export default function PublicProfile({
     return out;
   }, [readMeUser])
   const pageTitle = useMemo(() => `README | ${userDisplayName}`, [readMe?.user]);
-  const isUser = useMemo(() => readMe?.userId == session?.user.id || readMeUser?.id == session?.user.id, [readMe, readMeUser, session]);
+  const isUser = useMemo(() => readMe?.userId == userSession?.user.id || readMeUser?.id == userSession?.user.id, [readMe, readMeUser, userSession]);
 
   /**
    * We originally used Slate which stored data in a JSON format
@@ -82,7 +82,6 @@ export default function PublicProfile({
       text: data,
     });
   }
-
   /**
    * Insert and save a suggestion, then refresh the editor
    * @param suggestion
@@ -101,17 +100,17 @@ export default function PublicProfile({
         <meta property="og:description" content={pageDescription} key="ogdesc" />
         <title>{pageTitle}</title>
       </Head>
-      <Layout>
+      <Layout authenticated={userSession != undefined}>
         <ReadMeTitle name={userDisplayName} isUser={isUser} />
         <ReadMeContent>
           {isUser && (
-            <ReadMeAside className="hidden mb-4 2xl:mb-0 md:block">
+            <ReadMeAside position="left" className="hidden mb-4 2xl:mb-0 md:block">
               <SuggestedTopics onSuggestion={insertSuggestion} />
             </ReadMeAside>
           )}
           <NoSSR>
             {!isUser && (
-              <ReadMeAside className="hidden mb-4 2xl:mb-0 md:block">
+              <ReadMeAside position="left" className="hidden mb-4 2xl:mb-0 md:block">
                 <TableOfContents onClick={setEditorScrollTo} readMe={readMe!} />
               </ReadMeAside>
             )}
@@ -120,7 +119,7 @@ export default function PublicProfile({
             <EditorComponent
               appendData={appendSuggestion}
               onChange={save}
-              key={`readme-editor-${isUser ? session?.user.id : readMeUser?.id}`}
+              key={`readme-editor-${isUser ? userSession?.user.id : readMeUser?.id}`}
               scrollTo={editorScrollTo}
               placeholder={isUser ? "Introduce yourself..." : "Coming soon..."}
               readOnly={!isUser}
@@ -176,9 +175,16 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       props: {},
     };
   }
+
   const readMe = await prisma.readMe.findFirst({
     where: { user: { username } },
     include: { user: { select: { firstName: true, lastName: true, username: true } } },
   });
-  return { props: { readMe, session, readMeUser: user } };
+
+  //Not fool proof, some request rate limiting could help with this
+  if (readMe != null && readMe?.userId != session?.user.id) {
+    await prisma.readMe.update({ where: { id: readMe.id }, data: { reads: { increment: 1 } } })
+  }
+
+  return { props: { readMe, userSession: session, readMeUser: user } };
 };

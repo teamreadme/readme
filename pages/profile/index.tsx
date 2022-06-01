@@ -26,7 +26,7 @@ import ReadMeContent from "@/components/ReadMeContent";
 
 interface ProfileSettingsProps {
   user: User;
-  session: Session;
+  userSession: Session;
 }
 
 export default function ProfileSettings(props: ProfileSettingsProps) {
@@ -59,7 +59,7 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   }, [firstName, lastName, username]);
 
   return (
-    <Layout>
+    <Layout authenticated={true}>
       <ReadMeContent>
         <ReadMeMain>
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
@@ -173,8 +173,8 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
 }
 
 export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
-  if (!session) {
+  const userSession = await getSession(context);
+  if (!userSession) {
     return {
       redirect: {
         destination: "/auth/login",
@@ -184,7 +184,7 @@ export async function getServerSideProps(context: any) {
   }
 
   const user = await prisma.user.findFirst({
-    where: { id: session.user?.id },
+    where: { id: userSession.user?.id },
     select: {
       id: true,
       firstName: true,
@@ -193,5 +193,5 @@ export async function getServerSideProps(context: any) {
       lastName: true,
     },
   });
-  return { props: { user, session } as ProfileSettingsProps };
+  return { props: { user, userSession } as ProfileSettingsProps };
 }

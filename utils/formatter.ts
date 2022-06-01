@@ -20,12 +20,24 @@ export const hashString = (data: string) => {
   return hash;
 };
 
+/**
+ * Get a user's full name or username
+ * @param user
+ * @returns 
+ */
+export const userToName = (user: { firstName?: string|null, lastName?: string|null, username: string }) => {
+  if (user.firstName) {
+    return `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}`
+  }
+  return user.username;
+}
+
 
 /**
  * Remove any HTML elements from the string
  * @param text 
  * @returns 
  */
-export const stripHtml = (text: string) => {
-  return text.replace(/<\/?[^>]+(>|$)/g, "");
+export const stripHtml = (text?: string|null) => {
+  return text?.replace(/<\/?[^>]+(>|$)/g, "")??'';
 }
