@@ -65,11 +65,14 @@ export default function Explore({
                         />
                     </div>
                     <div className="space-y-2 flex-1">
-                        {readMes.map((readme) => <Link key={readme.id} href={`/${readme.user.username}`}><div className="p-4 cursor-pointer hover:shadow-md bg-white rounded-md">
-                            <h2>{userToName(readme.user)}</h2>
-                            <p className="text-gray-600">{stripHtml(readme.text)?.substring(0, 255) ?? 'No README yet'}</p>
-                        </div>
-                        </Link>
+                        {readMes.map((readme) => {
+                            let readMe = stripHtml(readme.text)?.substring(0, 255).trim();
+                            return <Link key={readme.id} href={`/${readme.user.username}`}><div className="p-4 cursor-pointer hover:shadow-md bg-white rounded-md">
+                                <h2>{userToName(readme.user)}</h2>
+                                <p className="text-gray-600">{readMe.length > 0 ? readMe : 'No README yet'}</p>
+                            </div>
+                            </Link>
+                        }
                         )}
                     </div>
                 </div>

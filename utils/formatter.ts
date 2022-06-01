@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { Descendant, Node } from "slate";
+import he from 'he';
 
 export { classNames };
 
@@ -25,7 +26,7 @@ export const hashString = (data: string) => {
  * @param user
  * @returns 
  */
-export const userToName = (user: { firstName?: string|null, lastName?: string|null, username: string }) => {
+export const userToName = (user: { firstName?: string | null, lastName?: string | null, username: string }) => {
   if (user.firstName) {
     return `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}`
   }
@@ -34,10 +35,14 @@ export const userToName = (user: { firstName?: string|null, lastName?: string|nu
 
 
 /**
- * Remove any HTML elements from the string
+ * Remove any HTML elements from the string and applies some addition formatting
+ * Meant for display plain text versions of READMEs
  * @param text 
  * @returns 
  */
-export const stripHtml = (text?: string|null) => {
-  return text?.replace(/<\/?[^>]+(>|$)/g, "")??'';
+export const stripHtml = (text?: string | null) => {
+  let strippedHtml = text?.replace('</h1>', '. ').replace('</h2>', '. ').replace(/<\/?[^>]+(>|$)/g, "") ?? '';
+  
+  //Decode HTML entities, i.e. &nbsp;
+  return he.decode(strippedHtml);
 }
