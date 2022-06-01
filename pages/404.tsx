@@ -1,3 +1,5 @@
+import Logo from "@/components/Logo";
+import LogoWithText from "@/components/LogoWithText";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -7,8 +9,8 @@ export default function NotFound() {
         <div className="flex-shrink-0 flex justify-center">
           <Link href="/" passHref>
             <a className="inline-flex">
-              <span className="sr-only">Workflow</span>
-              <img className="h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark.svg?color=purple&shade=600" alt="" />
+              <span className="sr-only">README</span>
+              <LogoWithText noLogoMargin={true} className="h-12 w-auto" />
             </a>
           </Link>
         </div>
@@ -16,7 +18,7 @@ export default function NotFound() {
           <div className="text-center">
             <p className="text-sm font-semibold text-purple-600 uppercase tracking-wide">404 error</p>
             <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Page not found.</h1>
-            <p className="mt-2 text-base text-gray-500">Sorry, we couldn’t find the page you’re looking for.</p>
+            <p className="mt-2 text-base text-gray-500">Sorry, we couldn't find the page you're looking for.</p>
             <div className="mt-6">
               <Link passHref={true} href="/">
                 <a className="text-base font-medium text-purple-600 hover:text-purple-500">
@@ -29,11 +31,11 @@ export default function NotFound() {
       </main>
       <footer className="flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex justify-center space-x-4">
-          <a href="mailto:jreynoldsdev@gmail.com" className="text-sm font-medium text-gray-500 hover:text-gray-600">
+          <a href="mailto:support@readmefirst.co" className="text-sm font-medium text-gray-500 hover:text-gray-600">
             Contact Support
           </a>
           <span className="inline-block border-l border-gray-300" aria-hidden="true" />
-          <a href="https://twitter.com/jreynoldsdev" rel="noreferrer" target="_blank" className="text-sm font-medium text-gray-500 hover:text-gray-600">
+          <a href="https://twitter.com/teamreadme" rel="noreferrer" target="_blank" className="text-sm font-medium text-gray-500 hover:text-gray-600">
             Twitter
           </a>
         </nav>

@@ -13,6 +13,7 @@ interface AppNavProps {
 
 const authNavigation = [
     { name: 'Home', href: '/me' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Explore', href: '/explore' }
 ]
 
