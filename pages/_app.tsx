@@ -10,9 +10,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <>
       <Head>
         <title key="head-title">README</title>
-        <meta name="description" content="Let the world know who you are" />
-        <meta property="og:title" content="README" key="ogtitle" />
-        <meta property="og:description" content="Let the world know who you are" key="ogdesc" />
+        <meta key="description" name="description" content="Let the world know who you are" />
+        <meta key="og:title" property="og:title" content="README" />
+        <meta key="og:description" property="og:description" content="Let the world know who you are"/>
+        <meta key="og:image" property="og:image" content="https://readmefirst.co/READMEMeta.png" />
+        <meta key="twitter:image" name="twitter:image" content="https://readmefirst.co/READMEMeta.png" />
       </Head>
       <SessionProvider session={session}>
         <PlausibleProvider domain="readmefirst.co">

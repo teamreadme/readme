@@ -18,16 +18,16 @@ export default function BlogApp({
     return <>
         <Head>
             <title>{frontmatter.title} | README Blog</title>
-            <meta property="title" content={`${frontmatter.title} | README Blog`} />
-            <meta property="og:title" content={`${frontmatter.title} | README Blog`} />
-            <meta property="og:type" content="blog" />
-            <meta property="og:url" content={`https://readmefirst.co/blog/${slug}`} />
-            <meta property="og:image" content={`https://readmefirst.co${frontmatter.imageUrl}`} />
-            <meta name="twitter:title" content={`${frontmatter.title} | README Blog`} />
-            <meta name="description" content={frontmatter.description} />
-            <meta name="twitter:description" content={frontmatter.description} />
-            <meta name="twitter:image" content={`https://readmefirst.co${frontmatter.imageUrl}`} />
-            <meta name="twitter:card" content="summary_large_image" />
+            <meta key="title" property="title" content={`${frontmatter.title} | README Blog`} />
+            <meta key="og:title" property="og:title" content={`${frontmatter.title} | README Blog`} />
+            <meta key="og:type" property="og:type" content="blog" />
+            <meta key="og:url" property="og:url" content={`https://readmefirst.co/blog/${slug}`} />
+            <meta key="og:image" property="og:image" content={`https://readmefirst.co${frontmatter.imageUrl}`} />
+            <meta key="twitter:title" name="twitter:title" content={`${frontmatter.title} | README Blog`} />
+            <meta key="description" name="description" content={frontmatter.description} />
+            <meta key="twitter:description" name="twitter:description" content={frontmatter.description} />
+            <meta key="twitter:image" name="twitter:image" content={`https://readmefirst.co${frontmatter.imageUrl}`} />
+            <meta key="twitter:card" name="twitter:card" content="summary_large_image" />
         </Head>
         <BlogHeader
             title={frontmatter.title}

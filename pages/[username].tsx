@@ -98,17 +98,13 @@ export default function PublicProfile({
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="utf-8" />
-        <meta name="description" content={pageDescription} />
-        <meta property="og:title" content={pageTitle} key="ogtitle" />
-        <meta property="og:description" content={pageDescription} key="ogdesc" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:url" content={`https://readmefirst.co/${username}`} />
-        <meta property="og:image" content="https://readmefirst.co/READMEMeta.png" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="description" content={pageDescription} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content="https://readmefirst.co/READMEMeta.png" />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="description" key="description" content={pageDescription} />
+        <meta property="og:description" key="og:description" content={pageDescription} />
+        <meta property="og:title" key="og:title" content={pageTitle} />
+        <meta property="og:url" key="og:url" content={`https://readmefirst.co/${username}`} />
+        <meta name="twitter:title" key="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" key="twitter:description" content={pageDescription} />
+        <meta name="twitter:card" key="twitter:card" content="summary_large_image" />
         <title>{pageTitle}</title>
       </Head>
       <Layout authenticated={userSession != undefined}>
