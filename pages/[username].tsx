@@ -19,6 +19,7 @@ import { hasTableOfContents } from "@/components/TableOfContents";
 import TableOfContents from "@/components/TableOfContents";
 import NoSSR from "@/components/NoSSR";
 import user from "./api/user";
+import { useRouter } from "next/router";
 
 export default function PublicProfile({
   readMe,
@@ -26,6 +27,8 @@ export default function PublicProfile({
   userSession,
   children,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
+  const router = useRouter()
+  const { username } = router.query
   const readMeData = useMemo<string>(getReadMeData, [readMe]);
   const [appendSuggestion, setAppendSuggestion] = useState<string>();
   const [editorScrollTo, setEditorScrollTo] = useState<string>();
@@ -98,6 +101,14 @@ export default function PublicProfile({
         <meta name="description" content={pageDescription} />
         <meta property="og:title" content={pageTitle} key="ogtitle" />
         <meta property="og:description" content={pageDescription} key="ogdesc" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:url" content={`https://readmefirst.co/${username}`} />
+        <meta property="og:image" content="https://readmefirst.co/READMEMeta.jpg" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="description" content={pageDescription} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content="https://readmefirst.co/READMEMeta.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
         <title>{pageTitle}</title>
       </Head>
       <Layout authenticated={userSession != undefined}>
