@@ -103,11 +103,11 @@ export default function PublicProfile({
         <meta property="og:description" content={pageDescription} key="ogdesc" />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:url" content={`https://readmefirst.co/${username}`} />
-        <meta property="og:image" content="https://readmefirst.co/READMEMeta.jpg" />
+        <meta property="og:image" content="https://readmefirst.co/READMEMeta.png" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="description" content={pageDescription} />
         <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content="https://readmefirst.co/READMEMeta.jpg" />
+        <meta name="twitter:image" content="https://readmefirst.co/READMEMeta.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <title>{pageTitle}</title>
       </Head>
