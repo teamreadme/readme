@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <meta name="description" content="Let the world know who you are" />
         <meta property="og:title" content="README" key="ogtitle" />
         <meta property="og:description" content="Let the world know who you are" key="ogdesc" />
+        <script defer data-domain="readmefirst.co" src="https://plausible.io/js/plausible.js"></script>
       </Head>
       <SessionProvider session={session}>
         <Component {...pageProps} />
