@@ -3,7 +3,7 @@
 const ContentSecurityPolicy = `
   default-src 'self';
   style-src 'self' 'unsafe-inline';
-  script-src 'self' ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
+  script-src 'self' plausible.io ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
 `
 const securityHeaders = [{
   key: 'Content-Security-Policy',
