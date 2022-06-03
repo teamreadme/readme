@@ -3,6 +3,7 @@ import "@/styles/editor.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import PlausibleProvider from "next-plausible";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -12,10 +13,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <meta name="description" content="Let the world know who you are" />
         <meta property="og:title" content="README" key="ogtitle" />
         <meta property="og:description" content="Let the world know who you are" key="ogdesc" />
-        <script defer data-domain="readmefirst.co" src="https://plausible.io/js/plausible.js"></script>
       </Head>
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <PlausibleProvider domain="readmefirst.co">
+          <Component {...pageProps} />
+        </PlausibleProvider>
       </SessionProvider>
     </>
   );

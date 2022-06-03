@@ -1,16 +1,18 @@
-/** @type {import('next').NextConfig} */
+const { withPlausibleProxy } = require('next-plausible')
+
 
 const ContentSecurityPolicy = `
   default-src 'self';
   style-src 'self' 'unsafe-inline';
-  script-src 'self' plausible.io ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
+  connect-src 'self'
+  script-src 'self' ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
 `
 const securityHeaders = [{
   key: 'Content-Security-Policy',
   value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim()
 }]
 
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -28,4 +30,4 @@ const nextConfig = {
   optimizeFonts: false, //https://github.com/vercel/next.js/issues/24781
 }
 
-module.exports = nextConfig
+module.exports = withPlausibleProxy()(nextConfig)
