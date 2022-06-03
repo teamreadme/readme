@@ -5,7 +5,7 @@ const ContentSecurityPolicy = `
   default-src 'self';
   style-src 'self' 'unsafe-inline';
   connect-src 'self';
-  script-src 'self' ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
+  script-src 'self' 'sha256-/6SBPqW+GW+//4nlXX6Y1nR9dWlh0gsQJ6KK71djH6A=' ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
 `
 const securityHeaders = [{
   key: 'Content-Security-Policy',
