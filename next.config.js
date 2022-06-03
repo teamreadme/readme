@@ -4,7 +4,7 @@ const { withPlausibleProxy } = require('next-plausible')
 const ContentSecurityPolicy = `
   default-src 'self';
   style-src 'self' 'unsafe-inline';
-  connect-src 'self'
+  connect-src 'self';
   script-src 'self' ${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}
 `
 const securityHeaders = [{
