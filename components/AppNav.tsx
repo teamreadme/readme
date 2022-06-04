@@ -14,19 +14,19 @@ interface AppNavProps {
 const authNavigation = [
     { name: 'Home', href: '/me' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Docs', href: '/docs' },
+    { name: 'Docs', href: '/docs', target: "_blank" },
     { name: 'Explore', href: '/explore' }
 ]
 
 const unauthNavigation = [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Docs', href: '/docs' },
+    { name: 'Docs', href: '/docs', target: "_blank" },
     { name: 'Login', href: '/auth/login', className: '!text-purple-600 hover:!text-purple-700' }
 ];
 
 export default function AppNav(props: AppNavProps) {
-    const navigation: { name: string, href: string, className?: string }[] = useMemo(() => props.authenticated ? authNavigation : unauthNavigation, [props.authenticated]);
+    const navigation: { name: string, href: string, className?: string, target?: string }[] = useMemo(() => props.authenticated ? authNavigation : unauthNavigation, [props.authenticated]);
 
     return <Popover>
         <div className="relative py-6 mb-4 px-4 sm:px-6 lg:px-8 border-b-[1px] border-gray-200">
@@ -48,7 +48,7 @@ export default function AppNav(props: AppNavProps) {
                 <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
                     {navigation.map((item) => (
                         <Link key={item.name} href={item.href} passHref={true}>
-                            <a className={classNames("font-medium text-gray-500 hover:text-gray-900", item.className)}>
+                            <a target={item.target} className={classNames("font-medium text-gray-500 hover:text-gray-900", item.className)}>
                                 {item.name}
                             </a>
                         </Link>
