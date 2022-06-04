@@ -14,11 +14,14 @@ interface AppNavProps {
 const authNavigation = [
     { name: 'Home', href: '/me' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Docs', href: '/docs' },
     { name: 'Explore', href: '/explore' }
 ]
 
 const unauthNavigation = [
+    { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Docs', href: '/docs' },
     { name: 'Login', href: '/auth/login', className: '!text-purple-600 hover:!text-purple-700' }
 ];
 
