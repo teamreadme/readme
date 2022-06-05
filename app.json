@@ -8,12 +8,12 @@
       "required": true
     },
     "NEXTAUTH_URL": {
-      "description": "Host URL, e.g. https://readmefirst.co",
-      "required": true
+      "description": "Host URL, e.g. https://readmefirst.co. Can update after deployment.",
+      "required": false
     },
     "SECRET": {
       "description": "Secure key for encryption",
-      "required": true
+      "generator": "secret"
     }
   },
   "formation": {
