@@ -16,6 +16,7 @@ const footer = {
     ],
     company: [
         { name: 'About', href: '/docs' },
+        { name: 'Github', href: 'https://github.com/teamreadme/readme' },
         { name: 'Blog', href: '/blog' },
     ],
     legal: [

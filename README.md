@@ -1,7 +1,7 @@
 ![](./public/meta-image.png)
 
 # 👋 Welcome
-Welcome to README! Want to learn more about what we're about? Check out our [website](https://readmefirst.co). Otherwise, continue below for hosting and contributing details.
+Welcome to README! Want to learn more about what we're about? Check out our [website](https://readmefirst.co). Otherwise, continue below for hosting and contributing details. README is still in the early stages of being open-sourced, expect better documentation and code quality soon.
 
 ## Getting started
 Want to run README yourself?

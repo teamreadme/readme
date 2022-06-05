@@ -15,10 +15,10 @@ export default function Inspiration() {
         </div>
       </div>
       <div className="flex flex-col mt-2">
-        <Link href="/jreynoldsdev">
+        <Link href={`/${process.env.NEXT_PUBLIC_INSPIRATION_USERNAME}`}>
           <div className="bg-white hover:shadow-md cursor-pointer transition rounded-md p-4">
-            <h2 className="text-lg font-bold">Jake Reynolds</h2>
-            <p>Founder, README</p>
+            <h2 className="text-lg font-bold">{process.env.NEXT_PUBLIC_INSPIRATION_USER_FULL}</h2>
+            <p>{process.env.NEXT_PUBLIC_INSPIRATION_USER_TITLE}</p>
           </div>
         </Link>
         <Link href="/sid">

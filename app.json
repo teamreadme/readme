@@ -1,6 +1,7 @@
 {
   "name": "README",
   "scripts": {},
+  "description": "Deploy your own README! After deployment, make sure to configure Mailgun.",
   "repository": "https://github.com/teamreadme/readme",
   "env": {
     "EMAIL_FROM": {

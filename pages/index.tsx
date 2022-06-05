@@ -97,7 +97,7 @@ export default function Home({
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                                     Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to co-workers, learn about others, and make every day interactions more enjoyable.
                                 </p>
-                                <p className="text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:hidden mt-8">How does it work? Check out an example <Link href="/jreynoldsdev">here!</Link></p>
+                                <p className="text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:hidden mt-8">How does it work? Check out an example <Link href={`/${process.env.NEXT_PUBLIC_INSPIRATION_USERNAME}`}>here!</Link></p>
                                 <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                                     <form onSubmit={signInClicked} className="mt-3 sm:flex">
                                         <label htmlFor="email" className="sr-only">
@@ -129,10 +129,10 @@ export default function Home({
                 <div className="hidden lg:flex lg:w-1/2 w-full mt-16 mr-10 flex-col justify-center items-center">
                     <div>
                         <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
-                            Jake Reynolds
+                            {process.env.NEXT_PUBLIC_INSPIRATION_USER_FULL}
                         </span>
                         <div className="bg-white prose prose-h1:m-0 prose-h2:m-0 prose-p:my-4 overflow-y-auto mt-4 p-4 h-[500px] rounded-md"><div dangerouslySetInnerHTML={{ __html: readMe?.text ?? '' }}></div></div>
-                        <p className="text-gray-600 mt-2 text-sm italic self-start">The above snippets come from an <Link href="/jreynoldsdev">actual README</Link>!</p>
+                        <p className="text-gray-600 mt-2 text-sm italic self-start">The above snippets come from an <Link href={`/${process.env.NEXT_PUBLIC_INSPIRATION_USERNAME}`}>actual README</Link>!</p>
                     </div>
                 </div>
             </div>
@@ -281,7 +281,7 @@ export default function Home({
  */
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const readMe = await prisma.readMe.findFirst({
-        where: { user: { username: 'jreynoldsdev' } },
+        where: { user: { username: process.env.NEXT_PUBLIC_INSPIRATION_USERNAME } },
         include: { user: { select: { firstName: true, lastName: true, username: true } } },
     });
     const userSession = await getSession(context);

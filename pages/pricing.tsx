@@ -273,7 +273,7 @@ export default function Pricing({
  */
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const readMe = await prisma.readMe.findFirst({
-    where: { user: { username: 'jreynoldsdev' } },
+    where: { user: { username: process.env.NEXT_PUBLIC_INSPIRATION_USERNAME } },
     include: { user: { select: { firstName: true, lastName: true, username: true } } },
   });
   const userSession = await getSession(context);
