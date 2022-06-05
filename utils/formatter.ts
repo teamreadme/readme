@@ -26,7 +26,8 @@ export const hashString = (data: string) => {
  * @param user
  * @returns 
  */
-export const userToName = (user: { firstName?: string | null, lastName?: string | null, username: string }) => {
+export const userToName = (user?: { firstName?: string | null, lastName?: string | null, username: string }) => {
+  if (!user) return "N/A";
   if (user.firstName) {
     return `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}`
   }

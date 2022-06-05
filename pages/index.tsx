@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import AppNav from '@/components/AppNav';
 import Footer from '@/components/Footer';
+import { userToName } from '@/utils/formatter';
 
 const features = [
     {
@@ -41,22 +42,6 @@ const features = [
     },
 ]
 
-const navigation: { main: { name: string, href: string }[], social: any[] } = {
-    main: [
-        { name: 'Blog', href: '/blog' }
-    ],
-    social: [
-        {
-            name: 'Twitter',
-            href: 'https://twitter.com/teamreadme',
-            icon: (props: any) => (
-                <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
-            ),
-        },
-    ],
-}
 
 export default function Home({
     readMe,
@@ -129,7 +114,7 @@ export default function Home({
                 <div className="hidden lg:flex lg:w-1/2 w-full mt-16 mr-10 flex-col justify-center items-center">
                     <div>
                         <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
-                            {process.env.NEXT_PUBLIC_INSPIRATION_USER_FULL}
+                            {userToName(readMe?.user)}
                         </span>
                         <div className="bg-white prose prose-h1:m-0 prose-h2:m-0 prose-p:my-4 overflow-y-auto mt-4 p-4 h-[500px] rounded-md"><div dangerouslySetInnerHTML={{ __html: readMe?.text ?? '' }}></div></div>
                         <p className="text-gray-600 mt-2 text-sm italic self-start">The above snippets come from an <Link href={`/${process.env.NEXT_PUBLIC_INSPIRATION_USERNAME}`}>actual README</Link>!</p>

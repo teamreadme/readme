@@ -15,6 +15,14 @@
     "SECRET": {
       "description": "Secure key for encryption",
       "generator": "secret"
+    },
+    "NEXT_PUBLIC_INSPIRATION_USERNAME": {
+      "description": "The username of the account to show as inspiration",
+      "value": "jreynoldsdevdemo"
+    },
+    "NEXT_PUBLIC_INSPIRATION_USER_TITLE": {
+      "description": "The job title of the account represented by $NEXT_PUBLIC_INSPIRATION_USERNAME",
+      "value": "Founder, README"
     }
   },
   "formation": {
