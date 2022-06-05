@@ -1,55 +1,34 @@
 {
-    "name": "README",
-    "scripts": {},
-    "repository": "https://github.com/teamreadme/readme",
-    "env": {
-      "EMAIL_FROM": {
-        "required": true
-      },
-      "HEROKU_POSTGRESQL_BROWN_URL": {
-        "required": true
-      },
-      "MAILGUN_API_KEY": {
-        "required": true
-      },
-      "MAILGUN_DOMAIN": {
-        "required": true
-      },
-      "MAILGUN_PUBLIC_KEY": {
-        "required": true
-      },
-      "MAILGUN_SMTP_LOGIN": {
-        "required": true
-      },
-      "MAILGUN_SMTP_PASSWORD": {
-        "required": true
-      },
-      "MAILGUN_SMTP_PORT": {
-        "required": true
-      },
-      "MAILGUN_SMTP_SERVER": {
-        "required": true
-      },
-      "NEXTAUTH_URL": {
-        "required": true
-      },
-      "SECRET": {
-        "required": true
-      }
+  "name": "README",
+  "scripts": {},
+  "repository": "https://github.com/teamreadme/readme",
+  "env": {
+    "EMAIL_FROM": {
+      "description": "Email address that emails are sent from",
+      "required": true
     },
-    "formation": {
-      "web": {
-        "quantity": 1
-      }
+    "NEXTAUTH_URL": {
+      "description": "Host URL, e.g. https://readmefirst.co",
+      "required": true
     },
-    "addons": [
-      "mailgun",
-      "heroku-postgresql"
-    ],
-    "buildpacks": [
-      {
-        "url": "heroku/nodejs"
-      }
-    ],
-    "stack": "heroku-20"
-  }
+    "SECRET": {
+      "description": "Secure key for encryption",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "mailgun",
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "stack": "heroku-20"
+}
