@@ -13,6 +13,7 @@ import { getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import AppNav from '@/components/AppNav';
+import Footer from '@/components/Footer';
 
 const features = [
     {
@@ -90,11 +91,11 @@ export default function Home({
                         <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                             <div className="sm:text-center lg:text-left">
                                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                                    <span className="block xl:inline">Encyclopedia</span>{' '}
-                                    <span className="block text-purple-600 xl:inline">you</span>
+                                    <span className="block xl:inline">The Open Source</span>{' '}
+                                    <span className="block text-purple-600 xl:inline">Personal User Manual</span>
                                 </h1>
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                                    Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to the world, learn about others, and make every day interactions more enjoyable.
+                                    Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to co-workers, learn about others, and make every day interactions more enjoyable.
                                 </p>
                                 <p className="text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:hidden mt-8">How does it work? Check out an example <Link href="/jreynoldsdev">here!</Link></p>
                                 <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
@@ -135,8 +136,8 @@ export default function Home({
                     </div>
                 </div>
             </div>
-            <div id="features" className="bg-gray-50 overflow-hidden mt-8">
-                <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div id="features" className="overflow-hidden mt-8">
+                <div className="relative bg-gray-50  rounded-md max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                     <div className="relative lg:grid lg:grid-cols-3 lg:gap-x-8">
                         <div className="lg:col-span-1">
                             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
@@ -232,7 +233,7 @@ export default function Home({
                             </h2>
                             <div className="mt-6 text-gray-500 space-y-6">
                                 <p className="text-lg">
-                                    Outside of dating profiles and twitter bios, how much opportunity do you really have to communicate who you are online?
+                                    Outside of intro meetings and twitter bios, how much opportunity do you really have to communicate who you are to your peers?
                                 </p>
                                 <p className="text-base leading-7">
                                     Since the mid-1970s README files have been included alongside software to provide an overview and describe the purpose of a piece of software.
@@ -249,7 +250,7 @@ export default function Home({
                     </div>
                 </div>
             </div>
-            <div className="bg-purple-50">
+            <div className="bg-purple-200">
                 <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-24 lg:px-8 lg:flex lg:items-center lg:justify-between">
                     <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
                         <span className="block">Ready to dive in?</span>
@@ -267,21 +268,7 @@ export default function Home({
                 </div>
             </div>
 
-            <footer className="bg-white">
-                <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-                    <div className="flex justify-center space-x-6 md:order-2">
-                        {navigation.social.map((item) => (
-                            <a target="_blank" rel="noopener noreferrer" key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
-                                <span className="sr-only">{item.name}</span>
-                                <item.icon className="h-6 w-6" aria-hidden="true" />
-                            </a>
-                        ))}
-                    </div>
-                    <div className="mt-8 md:mt-0 md:order-1">
-                        <p className="text-center text-base text-gray-400">&copy; 2022 README, Inc. All rights reserved.</p>
-                    </div>
-                </div>
-            </footer>
+            <Footer />
         </>
     )
 }

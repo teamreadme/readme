@@ -21,7 +21,9 @@ const authNavigation = [
 const unauthNavigation = [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Docs', href: '/docs', target: "_blank" },
+    { name: 'Github', href: 'https://github.com/teamreadme', target: "_blank" },
     { name: 'Login', href: '/auth/login', className: '!text-purple-600 hover:!text-purple-700' }
 ];
 
