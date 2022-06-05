@@ -122,7 +122,7 @@ export default function Home({
                 </div>
             </div>
             <div id="features" className="overflow-hidden mt-8">
-                <div className="relative bg-gray-50  rounded-md max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                <div className="relative bg-white rounded-md max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                     <div className="relative lg:grid lg:grid-cols-3 lg:gap-x-8">
                         <div className="lg:col-span-1">
                             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
