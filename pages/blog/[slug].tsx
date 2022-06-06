@@ -34,7 +34,7 @@ export default function BlogApp({
             description={frontmatter.description}
             author={frontmatter.author}
             imageUrl={frontmatter.imageUrl} />
-        <div className='prose prose-slate lg:prose-xl max-w-prose mt-4 mx-auto border-gray-200 border-2 p-4 rounded-md mb-12'>
+        <div className='prose prose-slate lg:prose-xl max-w-prose mt-4 mx-auto border-gray-200 border-0 lg:border-2 p-4 rounded-md mb-12'>
             <div dangerouslySetInnerHTML={{ __html: md({ html: true }).render(content) }} />
         </div>
         <Footer />
