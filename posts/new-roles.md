@@ -38,6 +38,10 @@ Want to level up from failures? Discuss your flaws! We all have them, but being 
 ### 5) Share it!
 If a README falls in the woods, does anyone hear it? Don't hesitate to [share your README](./sharing) in introductory emails or slack messages with coworkers! README is meant to increase accessibility in the workplace by allowing everyone access to the same information about you, decreasing "cliques", and increaasing transparency.
 
+---
+
+Ready to get started? [Create an account](/auth/register) and starting writing your README today!
+
 Before you know it, you'll be on your second day! Don't forget to reach out on twitter [@teamreadme](https://twitter.com/teamreadme) and let us know how it went!
 
 \- Jake Reynolds, Founder @ README
