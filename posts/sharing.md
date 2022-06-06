@@ -4,6 +4,7 @@ description: Where can you post your README so your team will have access to it?
 createdAt: 1654524849
 author: Jake Reynolds
 imageUrl: /blogImages/sharing.jpg
+metaImageUrl: /blogImages/sharing-meta.jpg
 createdAtDisplay: June 6, 2022
 ---
 

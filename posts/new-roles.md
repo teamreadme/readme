@@ -4,6 +4,7 @@ description: Introduce yourself to your new coworkers and start off on the right
 createdAt: 1654524849
 author: Jake Reynolds
 imageUrl: /blogImages/introduce.jpg
+metaImageUrl: /blogImages/introduce-meta.jpg
 createdAtDisplay: June 6, 2022
 ---
 
