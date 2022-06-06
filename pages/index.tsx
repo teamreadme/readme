@@ -15,6 +15,7 @@ import classNames from 'classnames';
 import AppNav from '@/components/AppNav';
 import Footer from '@/components/Footer';
 import { userToName } from '@/utils/formatter';
+import Image from 'next/image';
 
 const features = [
     {
@@ -175,10 +176,12 @@ export default function Home({
                         <div className="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0 lg:max-w-none lg:py-20">
                             {/* Testimonial card*/}
                             <div className="relative pt-64 pb-10 rounded-2xl shadow-xl overflow-hidden">
-                                <img
+                                <Image
+                                    layout="fill"
+                                    height="2408"
+                                    width="1595"
                                     className="absolute inset-0 h-full w-full object-cover"
                                     src="/skyline.jpg"
-                                    alt=""
                                 />
                                 <div className="absolute inset-0 bg-purple-500 mix-blend-multiply" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-purple-600 via-purple-600 opacity-90" />
