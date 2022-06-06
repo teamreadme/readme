@@ -20,7 +20,7 @@ Having a README about yourself gives you a headstart on your first day:
 So how do you get started?
 
 ## Writing a kick-ass README
-Here are 5 suggestions on writing your README and important sections to include
+Here are 5 suggestions on writing your README and important sections to include:
 
 ### 1) Be authentic
 This is the chance to introspect and represent your truest self. These people will spend 40 hours with you a week, they'll soon find out who you are and notice differences from what you write if they exist.
@@ -43,6 +43,6 @@ If a README falls in the woods, does anyone hear it? Don't hesitate to [share yo
 
 Ready to get started? [Create an account](/auth/register) and starting writing your README today!
 
-Before you know it, you'll be on your second day! Don't forget to reach out on twitter [@teamreadme](https://twitter.com/teamreadme) and let us know how it went!
+Before you know it, you'll be on your second day. Don't forget to reach out on twitter [@teamreadme](https://twitter.com/teamreadme) and let us know how it went.
 
 \- Jake Reynolds, Founder @ README
