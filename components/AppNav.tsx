@@ -23,7 +23,7 @@ const authNavigation = [
 const unauthNavigation = [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Pricing', href: '/pricing' },
+    // { name: 'Pricing', href: '/pricing' },
     { name: 'Docs', href: '/docs', target: "_blank" },
     { name: 'Github', href: 'https://github.com/teamreadme/readme', target: "_blank" },
     { name: 'Login', href: '/auth/login' },
