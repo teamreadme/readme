@@ -10,7 +10,7 @@ const footer = {
         { name: 'Insights', href: '#' },
     ],
     support: [
-        { name: 'Pricing', href: '/pricing' },
+        // { name: 'Pricing', href: '/pricing' },
         { name: 'Documentation', href: '/docs' },
         { name: 'Guides', href: '/docs' },
     ],
