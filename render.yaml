@@ -16,10 +16,22 @@ services:
     value: Founder, README
   - key: EMAIL_FROM
     value: jake@readmefirst.co
+  - key: SECRET
+    generateValue: true
   - key: DATABASE_URL
     fromDatabase:
       name: prod
       property: connectionString
+  - key: SMTP_LOGIN
+    sync: false
+  - key: SMTP_PORT
+    sync: false
+  - key: NEXT_TELEMETRY_DISABLED
+    value: 1
+  - key: SMTP_SERVER
+    sync: false
+  - key: SMTP_PASSWORD
+    sync: false
 
 databases:
   - name: prod

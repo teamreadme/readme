@@ -38,11 +38,11 @@ export default NextAuth({
     EmailProvider({
       from: process.env.EMAIL_FROM,
       server: {
-        host: process.env.MAILGUN_SMTP_SERVER,
-        port: process.env.MAILGUN_PORT,
+        host: process.env.SMTP_SERVER,
+        port: process.env.SMTP_PORT,
         auth: {
-          user: process.env.MAILGUN_SMTP_LOGIN,
-          pass: process.env.MAILGUN_SMTP_PASSWORD,
+          user: process.env.SMTP_LOGIN,
+          pass: process.env.SMTP_PASSWORD,
         },
       },
     }),
