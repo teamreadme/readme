@@ -1,10 +1,10 @@
 services:
 - type: web
   name: next-js
-  env: docker
+  env: node-js
   plan: starter plus
-  dockerfilePath: Dockerfile
-  dockerContext: ./
+  buildCommand: npm i && npm run build
+  startCommand: npm run migrate && npm start
   envVars:
   - key: NODE_ENV
     value: production
