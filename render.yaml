@@ -1,7 +1,7 @@
 services:
 - type: web
   name: next-js
-  env: node-js
+  env: node
   plan: starter plus
   buildCommand: npm i && npm run build
   startCommand: npm run migrate && npm start
