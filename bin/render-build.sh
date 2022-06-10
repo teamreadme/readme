@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Installing dependencies"
-npm ci
+npm install --production=false #Since render uses the same env for build and deploy, smh
 
 echo "Building prisma client"
 npm run prisma-generate
