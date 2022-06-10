@@ -3,8 +3,8 @@ services:
   name: next-js
   env: node
   plan: starter plus
-  buildCommand: npm i && npm run build
-  startCommand: npm run migrate && npm start
+  buildCommand: ./bin/render-build.sh
+  startCommand: npm start
   envVars:
   - key: NODE_ENV
     value: production
