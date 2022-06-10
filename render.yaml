@@ -2,7 +2,7 @@ services:
 - type: web
   name: next-js
   env: node
-  plan: starter-plus
+  plan: starter plus
   buildCommand: npm i; npm run build
   startCommand: npm start
   envVars:
@@ -23,6 +23,6 @@ services:
 
 databases:
   - name: prod
-    plan: standard-plus
-    databaseName: postgres
-    user: postgres
+    plan: standard plus
+    databaseName: readme
+    user: readme
