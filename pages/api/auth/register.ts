@@ -13,14 +13,22 @@ type RegisterUserDto = Joi.extractType<typeof registerUserSchema>;
 
 export default connect().put(withJoi({ body: registerUserSchema }), async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body as RegisterUserDto;
+  await registerUser(email);
+  return res.status(200).end();
+});
+
+/**
+ * Register a user with the provided email and create thir username
+ * @param email
+ */
+export async function registerUser(email: string) {
   let existing = await prisma.user.findFirst({ where: { email } });
   if (!existing) {
     let username = await getUsername(email);
 
     await prisma.user.create({ data: { email, username } });
   }
-  return res.status(200).end();
-});
+}
 
 async function getUsername(email: string) {
   let username = email.split("@")[0];

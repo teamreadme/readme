@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { prisma } from "@/utils/prisma";
+import { registerUser } from "./register";
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -25,11 +26,11 @@ export default NextAuth({
       }
       return session;
     },
-    // NextAuth has a built-in function where if a user signs in but doesn't have an account,
-    // it'll send them a registration email. However, we have a custom API for registration that we want to use
-    // so deny any requests on here for new users.
     async signIn({ user }) {
-      if (user.id === user.email) return `/auth/error?error=${encodeURIComponent("Please register an account first")}`;
+      //This is true when the user does not exist in the DB, register them in that case
+      if (user.id === user.email) {
+        await registerUser(user.email);
+      };
       return true;
     }
   },
