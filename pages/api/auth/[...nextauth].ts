@@ -26,7 +26,7 @@ export default NextAuth({
       }
       return session;
     },
-    async signIn({ user }) {
+    signIn: async ({ user }) => {
       //This is true when the user does not exist in the DB, register them in that case
       if (user.id === user.email) {
         await registerUser(user.email);

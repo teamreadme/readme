@@ -15,7 +15,7 @@ services:
   - key: NEXT_PUBLIC_INSPIRATION_USER_TITLE
     value: Founder, README
   - key: EMAIL_FROM
-    value: jake@readmefirst.co
+    value: noreply@readmefirst.co
   - key: SECRET
     generateValue: true
   - key: DATABASE_URL

@@ -4,6 +4,7 @@ import * as Joi from "@hapi/joi";
 import connect from "next-connect";
 import withJoi from "@/utils/WithJoi";
 import "joi-extract-type";
+import { sendGridRequest } from '@/utils/sendgrid';
 
 const registerUserSchema = Joi.object({
   email: Joi.string().required().email().max(512),
@@ -27,6 +28,7 @@ export async function registerUser(email: string) {
     let username = await getUsername(email);
 
     await prisma.user.create({ data: { email, username } });
+    await sendGridRequest({ url: `/v3/marketing/contacts`, method: 'PUT', body: { contacts: [{ email }] } })
   }
 }
 
