@@ -38,8 +38,8 @@ services:
       NEXTAUTH_URL: http://localhost:3000
       # These are prefixed with `MAILGUN` because Heroku automatically provisions these ENV vars in prod
       # However you can use whatever mail server you like
-      MAILGUN_SMTP_PASSWORD: password
-      MAILGUN_PORT: 587
-      MAILGUN_SMTP_LOGIN: test@ethereal.email
-      MAILGUN_SMTP_SERVER: smtp.ethereal.email
+      SMTP_PASSWORD: password
+      SMTP_PORT: 587
+      SMTP_LOGIN: test@ethereal.email
+      SMTP_SERVER: smtp.ethereal.email
       NEXT_TELEMETRY_DISABLED: 1

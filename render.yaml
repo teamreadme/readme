@@ -1,0 +1,42 @@
+services:
+- type: web
+  name: next-js
+  env: node
+  plan: starter plus
+  buildCommand: ./bin/render-build.sh
+  startCommand: npm start
+  envVars:
+  - key: NODE_ENV
+    value: production
+  - key: NEXT_PUBLIC_INSPIRATION_USERNAME
+    value: jreynoldsdev
+  - key: NEXT_PUBLIC_INSPIRATION_USER_FULL
+    value: Jake Reynolds
+  - key: NEXT_PUBLIC_INSPIRATION_USER_TITLE
+    value: Founder, README
+  - key: EMAIL_FROM
+    value: noreply@readmefirst.co
+  - key: SECRET
+    generateValue: true
+  - key: NEXTAUTH_URL
+    sync: false
+  - key: DATABASE_URL
+    fromDatabase:
+      name: prod
+      property: connectionString
+  - key: SMTP_LOGIN
+    sync: false
+  - key: SMTP_PORT
+    sync: false
+  - key: NEXT_TELEMETRY_DISABLED
+    value: 1
+  - key: SMTP_SERVER
+    sync: false
+  - key: SMTP_PASSWORD
+    sync: false
+
+databases:
+  - name: prod
+    plan: standard plus
+    databaseName: readme
+    user: readme
