@@ -1,6 +1,6 @@
 services:
 - type: web
-  name: next-js
+  name: app
   env: node
   plan: starter plus
   buildCommand: ./bin/render-build.sh
@@ -36,7 +36,7 @@ services:
     sync: false
 
 databases:
-  - name: prod
+  - name: database
     plan: standard plus
     databaseName: readme
     user: readme
