@@ -6,8 +6,8 @@ Welcome to README! Want to learn more about what we're about? Check out our [web
 ## Getting started
 Want to run README yourself?
 
-### Heroku
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+### Render
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ### Self-hosted
 ```
