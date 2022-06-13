@@ -69,7 +69,7 @@ const footer = {
 }
 
 export default function Footer() {
-    return <footer className="bg-gray-50 z-20" aria-labelledby="footer-heading">
+    return <footer className="bg-gray-50 bottom-0 z-20" aria-labelledby="footer-heading">
         <h2 id="footer-heading" className="sr-only">
             Footer
         </h2>

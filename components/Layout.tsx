@@ -49,8 +49,8 @@ export default function Layout(props: LayoutProps) {
           </div>
         </div>
         <div className="relative px-4 z-20 sm:px-6 lg:px-8 pb-8">{props.children}</div>
-        <Footer/>
       </div>
+      <Footer />
     </>
   );
 }

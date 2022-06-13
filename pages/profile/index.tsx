@@ -176,23 +176,21 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
                   </div>
                 </form>
               </section>
-              <div className="w-full flex flex-col items-end">
-                <div className="space-x-2 space">
-                  <button
-                    type="button"
-                    onClick={confirmAndDeleteProfile}
-                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                  >
-                    Delete profile
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => signOut()}
-                    className="inline-flex items-center px-3 py-2 border-2 border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-black border-purple-500 bg-white-600 hover:bg-gray-100 focus:outline-none"
-                  >
-                    Log out
-                  </button>
-                </div>
+              <div className="space-y-2 w-full md:justify-end flex flex-col md:flex-row md:space-y-0 md:space-x-2">
+                <button
+                  type="button"
+                  onClick={confirmAndDeleteProfile}
+                  className="inline-flex p-4 items-center md:px-3 md:py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  Delete profile
+                </button>
+                <button
+                  type="button"
+                  onClick={() => signOut()}
+                  className="inline-flex p-4 items-center md:px-3 md:py-2 border-2 border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-black border-purple-500 bg-white-600 hover:bg-gray-100 focus:outline-none"
+                >
+                  Log out
+                </button>
               </div>
             </div>
           </div>

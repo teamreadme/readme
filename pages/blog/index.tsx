@@ -8,6 +8,7 @@ import { InferGetServerSidePropsType } from "next";
 import BlogHeader from "@/components/BlogHeader";
 import Head from "next/head";
 import AppNav from "@/components/AppNav";
+import Footer from "@/components/Footer";
 
 
 export default function Blog({
@@ -89,6 +90,7 @@ export default function Blog({
                     </div>
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }
