@@ -41,7 +41,7 @@ export default connect()
 
 
 /**
- * Get all readMes with a name variant, or readme that match the search query
+ * Get all READMEs with a name variant, or READMEs that match the search query
  * 
  * @param query
  * @returns A maximum of 20 READMEs

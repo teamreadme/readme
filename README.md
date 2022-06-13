@@ -36,3 +36,12 @@ Create an account at https://ethereal.email/ and update the `.env` file to refer
 
 ### Generate TS client
 `npx prisma generate`
+
+## Out of band infrastructure
+README currently uses 2 pieces of infrastructure that are outside of render.com, listed below:
+
+### SendGrid
+[SendGrid](https://sendgrid.com) is used for email and marketing activities. If you would like to incorporate it into your deployment, provide the SendGrid API key to your render deployment and set up any emails or funnels in SendGrid. An onboarding email is a great start.
+
+### LogSnag
+[LogSnag](https://logsnag.com) is used for alerting on specific activities. It's a nice mechanism to let you know when new users sign up or offboard. If you would like to incorporate it into your deployment, provide the LogSnag API key to your render deployment. Do a repo-wide search for `logSnagPublish` to see what projects and channels to configure.
