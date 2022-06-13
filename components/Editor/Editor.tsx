@@ -33,7 +33,13 @@ export default function EditorComponent(props: EditorProps) {
    * @returns
    */
   function getInitialData() {
-    let out: string = props.initialData ?? props.placeholder ?? '';
+    let out: string = '';
+    if (props.initialData && props.initialData.length) {
+      out = props.initialData;
+    } else if (props.placeholder) {
+      out = props.placeholder;
+    }
+
     if (props.appendData?.length) {
       out = out.concat(props.appendData);
     }

@@ -8,6 +8,8 @@ import { authenticatedRequest } from "@/utils/apiValidation";
 import * as Joi from "@hapi/joi";
 import withJoi from "@/utils/WithJoi";
 import "joi-extract-type";
+import { deleteSendGridContact } from '@/utils/sendgrid';
+import { logSnagPublish } from '@/utils/logsnag';
 
 const userUpdateSchema = Joi.object({
   firstName: Joi.string().max(255).min(1),
@@ -45,4 +47,30 @@ export default connect()
     }
     await prisma.user.update({ where: { id: req.session.user.id }, data: updateObj });
     res.status(200).end();
+  })
+  .delete(async (req: NextAuthenticatedApiRequest, res: NextApiResponse) => {
+    const user = await prisma.user.findFirst({ select: { username: true, email: true }, where: { id: req.session.user.id } });
+    if (!user?.email) {
+      throw new Error("Internal server error");
+    }
+
+    //Delete the user in send grid and push to logsnag
+    await Promise.all([
+      deleteSendGridContact(user.email),
+      logSnagPublish({
+        project: "readme",
+        channel: "churned-user",
+        event: `User Churned`,
+        description: `${user.username} just churned`,
+        icon: "😭",
+        notify: true
+      })
+    ])
+
+    prisma.$transaction([
+      prisma.readMe.deleteMany({ where: { userId: req.session.user.id } }), //deleteMany so we ignore cases where they haven't created a README yet
+      prisma.session.deleteMany({ where: { userId: req.session.user.id } }),
+      prisma.user.delete({ where: { id: req.session.user.id } })
+    ])
+    res.status(200).redirect('/');
   });

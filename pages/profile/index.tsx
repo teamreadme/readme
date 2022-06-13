@@ -15,7 +15,7 @@ import {
 } from "@heroicons/react/outline";
 import { classNames } from "@/utils/formatter";
 import axios from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import { User } from "@prisma/client";
 import { Session } from "next-auth";
 import { prisma } from "@/utils/prisma";
@@ -34,6 +34,18 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
   const [lastName, setLastName] = useState(props.user.lastName || "");
   const [username, setUsername] = useState(props.user.username || "");
   const [error, setError] = useState("");
+
+  /**
+   * Verify the user wants to delete their profile and delete if so
+   */
+  async function confirmAndDeleteProfile() {
+    let deleteConfirmed = confirm("Are you sure you want to delete your account and all associated information?");
+    if (deleteConfirmed) {
+      await axios.delete('/api/user');
+      window.location.href = "https://readmefirst.co";
+      return;
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -164,6 +176,24 @@ export default function ProfileSettings(props: ProfileSettingsProps) {
                   </div>
                 </form>
               </section>
+              <div className="w-full flex flex-col items-end">
+                <div className="space-x-2 space">
+                  <button
+                    type="button"
+                    onClick={confirmAndDeleteProfile}
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    Delete profile
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => signOut()}
+                    className="inline-flex items-center px-3 py-2 border-2 border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-black border-purple-500 bg-white-600 hover:bg-gray-100 focus:outline-none"
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </ReadMeMain>
