@@ -63,7 +63,7 @@ export default function Home({
     return (
         <>
             <AppNav authenticated={userSession != null} />
-            <div className="relative lg:mb-32 lg:flex bg-gray-100 overflow-hidden">
+            <div className="relative lg:mb-32 lg:flex items-center lg:pt-10 bg-gray-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative z-10 pb-8 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                         <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
@@ -102,7 +102,7 @@ export default function Home({
                         </main>
                     </div>
                 </div>
-                <div className="lg:flex lg:w-1/2 w-full mt-8 lg:mt-16 mr-10 flex-col justify-center items-center">
+                <div className="lg:flex lg:w-1/2 w-full mt-8 lg:mt-0 mr-10 flex-col justify-center items-center">
                     <SelectableHero />
                 </div>
             </div>
