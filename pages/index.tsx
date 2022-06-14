@@ -1,21 +1,17 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
-import { prisma } from "@/utils/prisma";
-import { Popover, Transition } from '@headlessui/react'
-import { GlobeAltIcon, LightningBoltIcon, MailIcon, MenuIcon, ScaleIcon, XIcon } from '@heroicons/react/outline'
+import { useState } from 'react'
+import { GlobeAltIcon, LightningBoltIcon, MailIcon, ScaleIcon } from '@heroicons/react/outline'
 import Logo from '@/components/Logo'
-import ReadMeTitle from '@/components/ReadMeTitle'
 import Link from 'next/link'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import LogoWithText from '@/components/LogoWithText';
 import axios from 'axios';
 import { getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import AppNav from '@/components/AppNav';
 import Footer from '@/components/Footer';
-import { userToName } from '@/utils/formatter';
 import Image from 'next/image';
+import SelectableHero from '@/components/SelectableHero';
 
 const features = [
     {
@@ -45,7 +41,6 @@ const features = [
 
 
 export default function Home({
-    readMe,
     userSession
 }: InferGetServerSidePropsType<typeof getServerSideProps> & { children?: React.ReactNode }) {
     const [registering, setRegistering] = useState(false);
@@ -78,9 +73,8 @@ export default function Home({
                                     <span className="block text-purple-600 xl:inline">Personal User Manual</span>
                                 </h1>
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                                    Increase self-awareness and empathy by documenting the latest version of you. Introduce yourself to co-workers, learn about others, and make every day interactions more enjoyable.
+                                    Increase workplace communication and empathy by documenting the latest version of you. Introduce yourself to co-workers, learn about others, and make every day interactions more enjoyable.
                                 </p>
-                                <p className="text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:hidden mt-8">How does it work? Check out an example <Link href={`/${process.env.NEXT_PUBLIC_INSPIRATION_USERNAME}`}>here!</Link></p>
                                 <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                                     <form onSubmit={registerClicked} className="mt-3 sm:flex">
                                         <label htmlFor="email" className="sr-only">
@@ -108,14 +102,8 @@ export default function Home({
                         </main>
                     </div>
                 </div>
-                <div className="hidden lg:flex lg:w-1/2 w-full mt-16 mr-10 flex-col justify-center items-center">
-                    <div>
-                        <span className="block text-base text-center text-purple-600 font-semibold tracking-wide uppercase">
-                            {userToName(readMe?.user)}
-                        </span>
-                        <div className="bg-white prose prose-h1:m-0 prose-h2:m-0 prose-p:my-4 overflow-y-auto mt-4 p-4 h-[500px] rounded-md"><div dangerouslySetInnerHTML={{ __html: readMe?.text ?? '' }}></div></div>
-                        <p className="text-gray-600 mt-2 text-sm italic self-start">The above snippets come from an <Link href={`/${process.env.NEXT_PUBLIC_INSPIRATION_USERNAME}`}>actual README</Link>!</p>
-                    </div>
+                <div className="lg:flex lg:w-1/2 w-full mt-8 lg:mt-16 mr-10 flex-col justify-center items-center">
+                    <SelectableHero />
                 </div>
             </div>
             <div id="features" className="overflow-hidden mt-8">
@@ -266,11 +254,7 @@ export default function Home({
  * @returns
  */
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const readMe = await prisma.readMe.findFirst({
-        where: { user: { username: process.env.NEXT_PUBLIC_INSPIRATION_USERNAME } },
-        include: { user: { select: { firstName: true, lastName: true, username: true } } },
-    });
     const userSession = await getSession(context);
 
-    return { props: { readMe, userSession } };
+    return { props: { userSession } };
 };
