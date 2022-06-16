@@ -1,4 +1,4 @@
-import { AcademicCapIcon, ChartBarIcon, ChatIcon, DesktopComputerIcon } from "@heroicons/react/outline";
+import { AcademicCapIcon, ChartBarIcon, ChartPieIcon, ChatIcon, DesktopComputerIcon } from "@heroicons/react/outline";
 import { BriefcaseIcon } from "@primer/octicons-react";
 import React from "react";
 
@@ -181,7 +181,7 @@ export default function SuggestedTemplates(props: SuggestedTemplatesProps) {
       <ul role="list" className="divide-y divide-gray-200">
         {topics.map((topic) => (
           <li onClick={() => props.onSuggestion(topic.data)} className="hover:bg-gray-100 cursor-pointer py-4 flex" key={topic.title}>
-            {topic.icon({ className: 'h-10 w-10 p-2' })}
+            {topic.icon({ className: 'h-10 w-10 p-2 flex-shrink-0' })}
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-900">{topic.title}</p>
               <p className="text-sm text-gray-500">{topic.tagline}</p>
