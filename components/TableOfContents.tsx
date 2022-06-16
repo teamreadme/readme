@@ -41,7 +41,7 @@ export default function TableOfContents(props: TableOfContentsProps) {
   if (!toc?.length) return null;
   return (
     <div>
-      <div className="font-bold -ml-4 text-2xl">{toc[0]}</div>
+      <div className="font-bold -ml-2 text-2xl">{toc[0]}</div>
       {toc.slice(1)}
     </div>
   );
