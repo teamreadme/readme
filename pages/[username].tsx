@@ -14,12 +14,10 @@ import ReadMeMain from "@/components/ReadMeMain";
 import ReadMeAside from "@/components/ReadMeAside";
 import ReadMeTitle from "@/components/ReadMeTitle";
 import ReadMeContent from "@/components/ReadMeContent";
-import SuggestedTopics from "@/components/SuggestedTopics";
-import { hasTableOfContents } from "@/components/TableOfContents";
 import TableOfContents from "@/components/TableOfContents";
 import NoSSR from "@/components/NoSSR";
-import user from "./api/user";
 import { useRouter } from "next/router";
+import SuggestedTemplates from "@/components/SuggestedTemplates";
 
 export default function PublicProfile({
   readMe,
@@ -111,8 +109,8 @@ export default function PublicProfile({
         <ReadMeTitle name={userDisplayName} isUser={isUser} />
         <ReadMeContent>
           {isUser && (
-            <ReadMeAside position="left" className="hidden mb-4 2xl:mb-0 md:block">
-              <SuggestedTopics onSuggestion={insertSuggestion} />
+            <ReadMeAside position="left" className="hidden mb-4 space-y-8 2xl:mb-0 md:block">
+              <SuggestedTemplates onSuggestion={insertSuggestion} />
             </ReadMeAside>
           )}
           <NoSSR>
